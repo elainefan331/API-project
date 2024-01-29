@@ -20,7 +20,8 @@ module.exports = {
         references: {
           model:'Spots',
           key:'id'
-        }
+        },
+        onDelete: 'SET NULL'
       },
       userId: {
         type: Sequelize.INTEGER,
@@ -31,11 +32,11 @@ module.exports = {
         }
       },
       startDate: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATEONLY,
         allowNull: false
       },
       endDate: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATEONLY,
         allowNull: false
       },
       createdAt: {
