@@ -41,7 +41,7 @@ module.exports = {
       lat: {
         type: Sequelize.DECIMAL
       },
-      Ing: {
+      lng: {
         type: Sequelize.DECIMAL
       },
       name: {
