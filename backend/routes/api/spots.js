@@ -152,8 +152,8 @@ router.post('/', requireAuth, validateSpot, async(req, res, _next) => {
 //Add an Image to a Spot based on the Spot's id
 router.post('/:spotId/images', requireAuth, async(req, res, _next) => {
     const currentUser = req.user;
-    const {url, preview} = req.body;
     const spotId = req.params.spotId;
+    const {url, preview} = req.body;
 
     const targetSpot = await Spot.findByPk(spotId);
     
@@ -181,6 +181,41 @@ router.post('/:spotId/images', requireAuth, async(req, res, _next) => {
     }
     res.json(responseObj);
 });
+
+//Edit a Spot
+router.put('/:spotId', requireAuth, validateSpot, async(req, res, _next) => {
+    const currentUser = req.user;
+    const spotId = req.params.spotId;
+    const {address, city, state, country, lat, lng, name, description, price} = req.body;
+
+    const targetSpot = await Spot.findByPk(spotId);
+
+    if(!targetSpot) {
+        return res.status(404).json({
+            message: "Spot couldn't be found"
+        })
+    }
+
+    if(currentUser.id !== targetSpot.ownerId) {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    }
+
+    if(address) targetSpot.address = address;
+    if(city) targetSpot.city = city;
+    if(state) targetSpot.state = state;
+    if(country) targetSpot.country = country;
+    if(lat) targetSpot.lat = lat;
+    if(lng) targetSpot.lng = lng;
+    if(name) targetSpot.name = name;
+    if(description) targetSpot.description = description;
+    if(price) targetSpot.price = price;
+
+    res.json(targetSpot);
+});
+
+
 
 
 
