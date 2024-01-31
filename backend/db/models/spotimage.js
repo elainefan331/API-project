@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       SpotImage.belongsTo(models.Spot, { 
         foreignKey: "spotId",
         hooks: true,
-        onDelete: 'CASCADE'
+        // onDelete: 'CASCADE'
       });
     }
   }
