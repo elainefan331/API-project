@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       ReviewImage.belongsTo(models.Review, { 
         foreignKey: "reviewId",
         hooks: true,
-        onDelete: 'CASCADE' 
-      });
+        // onDelete: 'CASCADE'
+      }); 
     }
   }
   ReviewImage.init({
