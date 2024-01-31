@@ -2,7 +2,20 @@ const express = require('express');
 const { Review, User, Spot, ReviewImage, SpotImage } = require('../../db/models');
 const { restoreUser, requireAuth } = require('../../utils/auth.js');
 
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');
+
 const router = express.Router();
+
+const validateReview = [
+    check('review')
+        .exists({ checkFalsy: true })
+        .withMessage('Review text is required'),
+    check('stars')
+        .isInt({min:1, max:5})
+        .withMessage('Stars must be an integer from 1 to 5'),
+    handleValidationErrors
+]
 
 router.use(restoreUser);
 
@@ -95,6 +108,34 @@ router.post('/:reviewId/images', requireAuth, async(req, res, _next) => {
     }
 
     res.json(responseObj);
+});
+
+//Edit a Review
+router.put('/:reviewId', requireAuth, validateReview, async(req, res, _next) => {
+    const currentUser = req.user;
+    const { review, stars } = req.body;
+    const reviewId = req.params.reviewId;
+
+    const targetReview = await Review.findByPk(reviewId);
+
+    if(!targetReview) {
+        return res.status(404).json({
+            message: "Review couldn't be found"
+        })
+    }
+
+    if(currentUser.id !== targetReview.userId) {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    }
+
+    if(review) targetReview.review = review;
+    if(stars) targetReview.stars = stars;
+
+    await targetReview.save();
+
+    res.json(targetReview);
 });
 
 //Delete a Review
