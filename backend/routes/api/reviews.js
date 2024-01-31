@@ -28,7 +28,6 @@ router.get('/current', requireAuth, async(req, res, _next) => {
                     where: {
                         preview: true
                     }
-
                 }
             },
             {
@@ -55,8 +54,82 @@ router.get('/current', requireAuth, async(req, res, _next) => {
     });
 });
 
-//Get all Reviews by a Spot's id
+//Add an Image to a Review based on the Review's id
+router.post('/:reviewId/images', requireAuth, async(req, res, _next) => {
+    const currentUser = req.user;
+    const reviewId = req.params.reviewId;
+    const { url } = req.body;
 
+    const targetReview = await Review.findByPk(reviewId);
+    const allImages = await ReviewImage.findAll({
+        where: {
+            reviewId: reviewId
+        }
+    });
+
+    if(allImages.length >= 10) {
+        return res.status(403).json({
+            message: 'Maximum number of images for this resource was reached'
+        })
+    }
+
+    if(!targetReview) {
+        return res.status(404).json({
+            message: "Review couldn't be found"
+        })
+    }
+
+    if(currentUser.id !== targetReview.userId) {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    }
+
+    const newImage = await targetReview.createReviewImage({
+        url
+    });
+
+    const responseObj = {
+        id: newImage.id,
+        url: newImage.url
+    }
+
+    res.json(responseObj);
+});
+
+//Delete a Review
+router.delete('/:reviewId', requireAuth, async(req, res, _next) => {
+    const currentUser = req.user;
+    const reviewId = req.params.reviewId;
+    try {
+        const targetReview = await Review.findByPk(reviewId);
+    
+        if(!targetReview) {
+            return res.status(404).json({
+                message: "Review couldn't be found"
+            })
+        }
+    
+        if(currentUser.id !== targetReview.userId) {
+            return res.status(403).json({
+                message: "Forbidden"
+            })
+        }
+    
+        const deletedReview = await targetReview.destroy();
+    
+        res.json({
+            message: 'Successfully deleted'
+        })
+    } catch(error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Internal server error',
+            error: error.message, // Send the error message back in the response
+            stack: error.stack // Optional: include the stack trace for more detailed debugging
+        });
+    }
+});
 
 
 
