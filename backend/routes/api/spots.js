@@ -1,5 +1,5 @@
 const express = require('express');
-const { Spot, User, SpotImage, Review } = require('../../db/models');
+const { Spot, User, SpotImage, Review, ReviewImage } = require('../../db/models');
 const { restoreUser, requireAuth } = require('../../utils/auth.js');
 
 const { check } = require('express-validator');
@@ -242,6 +242,40 @@ router.delete('/:spotId', requireAuth, async(req, res, _next) => {
         message: "Successfully deleted"
     })
 });
+
+//Get all Reviews by a Spot's id
+router.get('/:spotId/reviews', async(req, res, _next) => {
+    const spotId = req.params.spotId;
+    const targetSpot = await Spot.findByPk(spotId);
+
+    if(!targetSpot) {
+        return res.status(404).json({
+            message: "Spot couldn't be found"
+        })
+    }
+
+    const reviews = await Review.findAll({
+        where: {
+            spotId: spotId
+        },
+        include: [
+            {
+                model: User,
+                attributes:['id', 'firstName', 'lastName']
+            },
+            {
+                model: ReviewImage,
+                attributes: ['id', 'url']
+            }
+        ]
+    });
+
+    res.json({
+        Reviews: reviews 
+    })
+});
+
+//Create a Review for a Spot based on the Spot's id
 
 
 
