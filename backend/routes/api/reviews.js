@@ -34,14 +34,14 @@ router.get('/current', requireAuth, async(req, res, _next) => {
             {
                 model: Spot,
                 attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'],
-                include: {
-                    model: SpotImage,
-                    as: 'previewImage',
-                    attributes: ['url'],
-                    where: {
-                        preview: true
-                    }
-                }
+                // include: {
+                //     model: SpotImage,
+                //     as: 'previewImage',
+                //     attributes: ['url'],
+                //     where: {
+                //         preview: true
+                //     }
+                // }
             },
             {
                 model: ReviewImage,
@@ -50,17 +50,40 @@ router.get('/current', requireAuth, async(req, res, _next) => {
         ]
     });
 
+    const updatedReviews = [];
+    
+    for(let review of reviews) {
+        let previewImage = await SpotImage.findOne({
+            where: {
+                spotId: review.spotId,
+                preview: true
+            },
+            attributes: ['url']
+        });
 
-    const updatedReviews = reviews.map(review => {
-        const updatedReview = review.toJSON();
-        if(updatedReview.Spot.previewImage.length > 0) {
-            updatedReview.Spot.previewImage = updatedReview.Spot.previewImage[0].url;
+        const newReview = review.toJSON();
+        if(previewImage) {
+            newReview.Spot.previewImage = previewImage.url
         } else {
-            updatedReview.Spot.previewImage = null;
+            newReview.Spot.previewImage = "none"
         }
 
-        return updatedReview;
-    })
+        updatedReviews.push(newReview)
+    }
+
+
+
+    // const updatedReviews = reviews.map(review => {
+    //     const updatedReview = review.toJSON();
+    //     console.log(updatedReview);
+    //     if(updatedReview.Spot && updatedReview.Spot.previewImage && updatedReview.Spot.previewImage.length > 0) {
+    //         updatedReview.Spot.previewImage = updatedReview.Spot.previewImage[0].url;
+    //     } else {
+    //         updatedReview.Spot.previewImage = null;
+    //     }
+
+    //     return updatedReview;
+    // })
 
     res.json({
         Reviews: updatedReviews
