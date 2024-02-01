@@ -426,7 +426,7 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async(req, res, _
     const currentUser = req.user;
     const userId = req.user.id;
     const spotId = req.params.spotId;
-    const { startDate, endDate } = req.body;
+    let { startDate, endDate } = req.body;
     
     const targetSpot = await Spot.findByPk(spotId);
     
@@ -441,7 +441,30 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async(req, res, _
             message: "Forbidden"
         })
     }
+   
+    const newStartDate = new Date(startDate);
+    const newEndDate = new Date(endDate);
 
+    const bookings = await Booking.findAll({
+        where: {
+            spotId: spotId
+        }
+    });
+
+    for(let booking of bookings) {
+        const existStartDate = new Date(booking.startDate);
+        const existEndDate = new Date(booking.endDate);
+      
+        if((newStartDate >= existStartDate && newStartDate < existEndDate) || (newEndDate > existStartDate && newEndDate <= existEndDate) || (newStartDate <= existStartDate && newEndDate >= existEndDate)) {
+            return res.status(403).json({
+                message: 'Sorry, this spot is already booked for the specified dates',
+                errors: {
+                    startDate: 'Start date conflicts with an existing booking',
+                    endDate: 'End date conflicts with an existing booking'
+                }
+            })
+        }
+    }
 
     const newBooking = await targetSpot.createBooking({
         spotId,
