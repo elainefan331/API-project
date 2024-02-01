@@ -1,4 +1,5 @@
 const express = require('express');
+const { Op } = require("sequelize");
 const { Spot, User, SpotImage, Review, ReviewImage, Booking } = require('../../db/models');
 const { restoreUser, requireAuth } = require('../../utils/auth.js');
 
@@ -33,7 +34,7 @@ const validateSpot = [
         .exists({ checkFalsy: true })
         .withMessage('Description is required'),
     check('price')
-        .isFloat({min: 1})
+        .isFloat({min: 0})
         .withMessage('Price per day must be a positive number'),
     handleValidationErrors
 ]
@@ -65,16 +66,85 @@ const validateBooking = [
     handleValidationErrors
 ]
 
+const validatePageSize = [
+    check('page')
+        .optional({checkFalsy: true})
+        .isInt({min: 1, max: 10})
+        .withMessage('Page must be greater than or equal to 1'),
+    check('size')
+        .optional({checkFalsy: true})
+        .isInt({min: 1, max: 20})
+        .withMessage('Size must be greater than or equal to 1'),
+    check('maxLat')
+        .optional({checkFalsy: true})
+        .isFloat({min: -90, max: 90})
+        .withMessage('Maximum latitude is invalid'),
+    check('minLat')
+        .optional({checkFalsy: true})
+        .isFloat({min: -90, max: 90})
+        .withMessage('Minimum latitude is invalid'),
+    check('minLng')
+        .optional({checkFalsy: true})
+        .isFloat({min: -180, max: 180})
+        .withMessage('Minimum longitude is invalid'),
+    check('maxLng')
+        .optional({checkFalsy: true})
+        .isFloat({min: -180, max: 180})
+        .withMessage('Maximum longitude is invalid'),
+    check('minPrice')
+        .optional({checkFalsy: true})
+        .isFloat({min: 0})
+        .withMessage('Minimum price must be greater than or equal to 0'),
+    check('maxPrice')
+        .optional({checkFalsy: true})
+        .isFloat({min: 0})
+        .withMessage('Maximum price must be greater than or equal to 0'),
+    handleValidationErrors
+]
+
 router.use(restoreUser);
 
 //get all spots
-router.get('/', requireAuth, async(req, res, _next) => {
+router.get('/', validatePageSize, async(req, res, _next) => {
     console.log('Accessing all spots');
-    const allSpots = await Spot.findAll();
+    let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query;
+    
+    let paginationObj = {};
+    
+    if(!size) size = 20;
+    if(!page) page = 1;
+    
+    paginationObj.limit = size;
+    paginationObj.offset = size * (page - 1);
 
-    const updatedSpots = [];
+    let where = {};
+    if(minLat && maxLat) {
+        where.lat = { [Op.between]: [parseFloat(minLat), parseFloat(maxLat)] }
+    } else {
+        if(minLat) where.lat = { [Op.gte]: parseFloat(minLat) };
+        if(maxLat) where.lat = { [Op.lte]: parseFloat(maxLat) };
+    }
 
-    for(let spot of allSpots) {
+    if(minLng && maxLng) {
+        where.lng = { [Op.between]: [parseFloat(minLng), parseFloat(maxLng)] }
+    } else {
+        if(minLng) where.lng = { [Op.gte]: parseFloat(minLng) };
+        if(maxLng) where.lng = { [Op.lte]: parseFloat(maxLng) };
+    }
+    
+    if(minPrice && maxPrice) {
+        where.price = { [Op.between]: [parseFloat(minPrice), parseFloat(maxPrice)] }
+    } else {
+        if(minPrice) where.price = { [Op.gte]: parseFloat(minPrice) };
+        if(maxPrice) where.price = { [Op.lte]: parseFloat(maxPrice) };
+    }
+    
+    const allSpots = await Spot.findAll({
+        where,
+        ...paginationObj
+    });
+
+    const updatedSpots = await Promise.all(allSpots.map(async(spot) => {
         let reviews = await Review.findAll({
             where: {
                 spotId: spot.id
@@ -100,10 +170,17 @@ router.get('/', requireAuth, async(req, res, _next) => {
             spotObj.previewImage = "none"
         }
 
-        updatedSpots.push(spotObj)
-    }
-    
-    res.json(updatedSpots);
+        return spotObj;
+
+    }))
+
+    page = parseInt(page);
+    size = parseInt(size);
+    res.json({
+        Spots: updatedSpots,
+        page: page,
+        size: size
+    });
 });
 
 //get all spots owned by the current user
@@ -305,7 +382,7 @@ router.delete('/:spotId', requireAuth, async(req, res, _next) => {
     res.json({
         message: "Successfully deleted"
     });
-    
+
 });
 //Reviews
 //Get all Reviews by a Spot's id
