@@ -304,7 +304,8 @@ router.delete('/:spotId', requireAuth, async(req, res, _next) => {
 
     res.json({
         message: "Successfully deleted"
-    })
+    });
+    
 });
 //Reviews
 //Get all Reviews by a Spot's id
