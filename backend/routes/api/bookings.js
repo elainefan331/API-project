@@ -59,6 +59,10 @@ router.get('/current', requireAuth, async(req, res, _next) => {
             newBooking.Spot.previewImage = "none"
         }
 
+        newBooking.Spot.lat = parseFloat(newBooking.Spot.lat);//for number
+        newBooking.Spot.lng = parseFloat(newBooking.Spot.lng);//for number
+        newBooking.Spot.price = parseFloat(newBooking.Spot.price);//for number datatype on render
+
         updatedBookings.push(newBooking)
     }
 

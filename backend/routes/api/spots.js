@@ -170,9 +170,9 @@ router.get('/', validatePageSize, async(req, res, _next) => {
             spotObj.previewImage = "none"
         }
 
-        spotObj.lat = parseFloat(spotObj.lat);
-        spotObj.lng = parseFloat(spotObj.lng);
-        spotObj.price = parseFloat(spotObj.price);
+        spotObj.lat = parseFloat(spotObj.lat);//for number
+        spotObj.lng = parseFloat(spotObj.lng);//for number
+        spotObj.price = parseFloat(spotObj.price);//for number datatype on render
 
         return spotObj;
 
@@ -223,6 +223,10 @@ router.get('/current', requireAuth, async(req, res, _next) => {
         } else {
             spotObj.previewImage = "none"
         }
+
+        spotObj.lat = parseFloat(spotObj.lat);//for number
+        spotObj.lng = parseFloat(spotObj.lng);//for number
+        spotObj.price = parseFloat(spotObj.price);//for number datatype on live
         
         updatedSpots.push(spotObj)
     }
@@ -271,6 +275,10 @@ router.get('/:spotId', async(req, res, _next) => {
     spotObj.numReviews = numReviews;
     spotObj.avgStarRating = avgStarRating;
 
+    spotObj.lat = parseFloat(spotObj.lat);//for number
+    spotObj.lng = parseFloat(spotObj.lng);//for number
+    spotObj.price = parseFloat(spotObj.price);//for number datatype on live
+
     res.json(spotObj);
 });
 
@@ -290,7 +298,14 @@ router.post('/', requireAuth, validateSpot, async(req, res, _next) => {
         price
     });
 
-    res.status(201).json(newSpot);
+    const spotObj = newSpot.toJSON();//for number
+    spotObj.lat = parseFloat(spotObj.lat);//for number
+    spotObj.lng = parseFloat(spotObj.lng);//for number
+    spotObj.price = parseFloat(spotObj.price);//for number datatype on live
+
+    
+
+    res.status(201).json(spotObj);//turn newSpot to spotObj
 });
 
 //Add an Image to a Spot based on the Spot's id
@@ -331,7 +346,7 @@ router.post('/:spotId/images', requireAuth, async(req, res, _next) => {
 router.put('/:spotId', requireAuth, validateSpot, async(req, res, _next) => {
     const currentUser = req.user;
     const spotId = req.params.spotId;
-    const {address, city, state, country, lat, lng, name, description, price} = req.body;
+    let {address, city, state, country, lat, lng, name, description, price} = req.body;//turn const to let
 
     const targetSpot = await Spot.findByPk(spotId);
 
@@ -351,11 +366,11 @@ router.put('/:spotId', requireAuth, validateSpot, async(req, res, _next) => {
     if(city) targetSpot.city = city;
     if(state) targetSpot.state = state;
     if(country) targetSpot.country = country;
-    if(lat) targetSpot.lat = lat;
-    if(lng) targetSpot.lng = lng;
+    if(lat) targetSpot.lat = parseFloat(lat);//for number
+    if(lng) targetSpot.lng = parseFloat(lng);//for number
     if(name) targetSpot.name = name;
     if(description) targetSpot.description = description;
-    if(price) targetSpot.price = price;
+    if(price) targetSpot.price = parseFloat(price);//for number datatype on render
 
     await targetSpot.save();
 

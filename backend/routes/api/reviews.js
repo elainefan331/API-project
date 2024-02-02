@@ -33,15 +33,7 @@ router.get('/current', requireAuth, async(req, res, _next) => {
             }, 
             {
                 model: Spot,
-                attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'],
-                // include: {
-                //     model: SpotImage,
-                //     as: 'previewImage',
-                //     attributes: ['url'],
-                //     where: {
-                //         preview: true
-                //     }
-                // }
+                attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price']
             },
             {
                 model: ReviewImage,
@@ -62,28 +54,19 @@ router.get('/current', requireAuth, async(req, res, _next) => {
         });
 
         const newReview = review.toJSON();
+        
         if(previewImage) {
             newReview.Spot.previewImage = previewImage.url
         } else {
             newReview.Spot.previewImage = "none"
         }
 
+        newReview.Spot.lat = parseFloat(newReview.Spot.lat);//for number
+        newReview.Spot.lng = parseFloat(newReview.Spot.lng);//for number
+        newReview.Spot.price = parseFloat(newReview.Spot.price);//for number datatype on render
+
         updatedReviews.push(newReview)
     }
-
-
-
-    // const updatedReviews = reviews.map(review => {
-    //     const updatedReview = review.toJSON();
-    //     console.log(updatedReview);
-    //     if(updatedReview.Spot && updatedReview.Spot.previewImage && updatedReview.Spot.previewImage.length > 0) {
-    //         updatedReview.Spot.previewImage = updatedReview.Spot.previewImage[0].url;
-    //     } else {
-    //         updatedReview.Spot.previewImage = null;
-    //     }
-
-    //     return updatedReview;
-    // })
 
     res.json({
         Reviews: updatedReviews
