@@ -97,6 +97,19 @@ router.post('/:reviewId/images', requireAuth, async(req, res, _next) => {
     const { url } = req.body;
 
     const targetReview = await Review.findByPk(reviewId);
+    
+    if(!targetReview) {
+        return res.status(404).json({
+            message: "Review couldn't be found"
+        })
+    }
+    
+    if(currentUser.id !== targetReview.userId) {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    }
+    
     const allImages = await ReviewImage.findAll({
         where: {
             reviewId: reviewId
@@ -109,17 +122,7 @@ router.post('/:reviewId/images', requireAuth, async(req, res, _next) => {
         })
     }
 
-    if(!targetReview) {
-        return res.status(404).json({
-            message: "Review couldn't be found"
-        })
-    }
 
-    if(currentUser.id !== targetReview.userId) {
-        return res.status(403).json({
-            message: "Forbidden"
-        })
-    }
 
     const newImage = await targetReview.createReviewImage({
         url
