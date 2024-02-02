@@ -1,4 +1,5 @@
 const express = require('express');
+const { Op } = require("sequelize");
 const { Booking, SpotImage, Spot } = require('../../db/models');
 const { restoreUser, requireAuth } = require('../../utils/auth.js');
 
@@ -112,7 +113,10 @@ router.put('/:bookingId', requireAuth, validateBooking, async(req, res, _next) =
 
         const bookings = await Booking.findAll({
             where: {
-                spotId: spotId
+                spotId: spotId,
+                id: {
+                    [Op.ne]: bookingId, 
+                }
             }
         });
 
