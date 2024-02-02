@@ -170,6 +170,10 @@ router.get('/', validatePageSize, async(req, res, _next) => {
             spotObj.previewImage = "none"
         }
 
+        spotObj.lat = parseFloat(spotObj.lat);
+        spotObj.lng = parseFloat(spotObj.lng);
+        spotObj.price = parseFloat(spotObj.price);
+
         return spotObj;
 
     }))
@@ -533,7 +537,7 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async(req, res, _
         const existStartDate = new Date(booking.startDate);
         const existEndDate = new Date(booking.endDate);
       
-        if((newStartDate >= existStartDate && newStartDate < existEndDate) || (newEndDate > existStartDate && newEndDate <= existEndDate) || (newStartDate <= existStartDate && newEndDate >= existEndDate)) {
+        if((newStartDate >= existStartDate && newStartDate <= existEndDate) || (newEndDate >= existStartDate && newEndDate <= existEndDate) || (newStartDate <= existStartDate && newEndDate >= existEndDate)) {
             return res.status(403).json({
                 message: 'Sorry, this spot is already booked for the specified dates',
                 errors: {
