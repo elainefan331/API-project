@@ -17,6 +17,13 @@ const validateReview = [
     handleValidationErrors
 ]
 
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toISOString()
+      .replace(/T/, ' ')      // replace T with a space
+      .replace(/\..+/, '');   // delete the dot and everything after
+}
+
 router.use(restoreUser);
 
 //Get all Reviews of the Current User
@@ -60,6 +67,11 @@ router.get('/current', requireAuth, async(req, res, _next) => {
         } else {
             newReview.Spot.previewImage = "none"
         }
+
+        //format 
+        newReview.createdAt = formatDate(newReview.createdAt);
+        newReview.updatedAt = formatDate(newReview.updatedAt);
+        
 
         newReview.Spot.lat = parseFloat(newReview.Spot.lat);//for number
         newReview.Spot.lng = parseFloat(newReview.Spot.lng);//for number
@@ -144,7 +156,12 @@ router.put('/:reviewId', requireAuth, validateReview, async(req, res, _next) => 
 
     await targetReview.save();
 
-    res.json(targetReview);
+    //for formatting the date
+    const reviewObj = targetReview.toJSON();
+    reviewObj.createdAt = formatDate(reviewObj.createdAt);
+    reviewObj.updatedAt = formatDate(reviewObj.updatedAt);
+
+    res.json(reviewObj);//turn targetReview to reviewObj
 });
 
 //Delete a Review
