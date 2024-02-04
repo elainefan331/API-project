@@ -25,6 +25,14 @@ const validateBooking = [
     handleValidationErrors
 ]
 
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toISOString()
+      .replace(/T/, ' ')      // replace T with a space
+      .replace(/\..+/, '');   // delete the dot and everything after
+}
+
+
 router.use(restoreUser);
 
 //Get all of the Current User's Bookings
@@ -59,6 +67,10 @@ router.get('/current', requireAuth, async(req, res, _next) => {
         } else {
             newBooking.Spot.previewImage = "none"
         }
+
+        //format 
+        newBooking.createdAt = formatDate(newBooking.createdAt);
+        newBooking.updatedAt = formatDate(newBooking.updatedAt);
 
         newBooking.Spot.lat = parseFloat(newBooking.Spot.lat);//for number
         newBooking.Spot.lng = parseFloat(newBooking.Spot.lng);//for number
@@ -139,8 +151,13 @@ router.put('/:bookingId', requireAuth, validateBooking, async(req, res, _next) =
         if(endDate) targetBooking.endDate = endDate;
 
         await targetBooking.save();
+
+        //for formatting date
+        const bookingObj = targetBooking.toJSON();
+        bookingObj.createdAt = formatDate(bookingObj.createdAt);
+        bookingObj.updatedAt = formatDate(bookingObj.updatedAt);
     
-        res.json(targetBooking);
+        res.json(bookingObj);//turn targetBooking to bookingObj
     } catch(error) {
         console.log(error);
         res.status(500).json({

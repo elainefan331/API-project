@@ -102,6 +102,13 @@ const validatePageSize = [
     handleValidationErrors
 ]
 
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toISOString()
+      .replace(/T/, ' ')      // replace T with a space
+      .replace(/\..+/, '');   // delete the dot and everything after
+}
+
 router.use(restoreUser);
 
 //get all spots
@@ -144,6 +151,7 @@ router.get('/', validatePageSize, async(req, res, _next) => {
         ...paginationObj
     });
 
+
     const updatedSpots = await Promise.all(allSpots.map(async(spot) => {
         let reviews = await Review.findAll({
             where: {
@@ -169,6 +177,10 @@ router.get('/', validatePageSize, async(req, res, _next) => {
         } else {
             spotObj.previewImage = "none"
         }
+
+        //format 
+        spotObj.createdAt = formatDate(spot.createdAt);
+        spotObj.updatedAt = formatDate(spot.updatedAt);
 
         spotObj.lat = parseFloat(spotObj.lat);//for number
         spotObj.lng = parseFloat(spotObj.lng);//for number
@@ -224,6 +236,10 @@ router.get('/current', requireAuth, async(req, res, _next) => {
             spotObj.previewImage = "none"
         }
 
+        //format 
+        spotObj.createdAt = formatDate(spotObj.createdAt);
+        spotObj.updatedAt = formatDate(spotObj.updatedAt);
+
         spotObj.lat = parseFloat(spotObj.lat);//for number
         spotObj.lng = parseFloat(spotObj.lng);//for number
         spotObj.price = parseFloat(spotObj.price);//for number datatype on live
@@ -275,6 +291,10 @@ router.get('/:spotId', async(req, res, _next) => {
     spotObj.numReviews = numReviews;
     spotObj.avgStarRating = avgStarRating;
 
+    //format 
+    spotObj.createdAt = formatDate(spotObj.createdAt);
+    spotObj.updatedAt = formatDate(spotObj.updatedAt);
+
     spotObj.lat = parseFloat(spotObj.lat);//for number
     spotObj.lng = parseFloat(spotObj.lng);//for number
     spotObj.price = parseFloat(spotObj.price);//for number datatype on live
@@ -299,6 +319,9 @@ router.post('/', requireAuth, validateSpot, async(req, res, _next) => {
     });
 
     const spotObj = newSpot.toJSON();//for number
+    //format 
+    spotObj.createdAt = formatDate(spotObj.createdAt);
+    spotObj.updatedAt = formatDate(spotObj.updatedAt);
     spotObj.lat = parseFloat(spotObj.lat);//for number
     spotObj.lng = parseFloat(spotObj.lng);//for number
     spotObj.price = parseFloat(spotObj.price);//for number datatype on live
@@ -374,7 +397,14 @@ router.put('/:spotId', requireAuth, validateSpot, async(req, res, _next) => {
 
     await targetSpot.save();
 
-    res.json(targetSpot);
+    const spotObj = targetSpot.toJSON();
+
+    //format 
+    spotObj.createdAt = formatDate(spotObj.createdAt);
+    spotObj.updatedAt = formatDate(spotObj.updatedAt);
+
+
+    res.json(spotObj);
 });
 
 //Delete a Spot
@@ -431,8 +461,18 @@ router.get('/:spotId/reviews', async(req, res, _next) => {
         ]
     });
 
+    //for date formatting
+    const updatedReviews = [];
+    for(let review of reviews) {
+        const reviewObj = review.toJSON();
+        reviewObj.createdAt = formatDate(reviewObj.createdAt);
+        reviewObj.updatedAt = formatDate(reviewObj.updatedAt);
+
+        updatedReviews.push(reviewObj);
+    }
+
     res.json({
-        Reviews: reviews 
+        Reviews: updatedReviews
     })
 });
 
@@ -469,8 +509,12 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async(req, res, _ne
         review,
         stars
     });
+    //for date formatting
+    const reviewObj = newReview.toJSON();
+    reviewObj.createdAt = formatDate(reviewObj.createdAt);
+    reviewObj.updatedAt = formatDate(reviewObj.updatedAt);
 
-    res.status(201).json(newReview);
+    res.status(201).json(reviewObj);//turn newReview to reviewObj
 });
 
 //Get all Bookings for a Spot based on the Spot's id
@@ -499,8 +543,18 @@ router.get('/:spotId/bookings', requireAuth, async(req, res, _next) => {
             ]
         });
 
+        const updatedBookings = [];
+
+        for(let booking of bookings) {
+            const bookingObj = booking.toJSON();
+            bookingObj.createdAt = formatDate(bookingObj.createdAt);
+            bookingObj.updatedAt = formatDate(bookingObj.updatedAt);
+
+            updatedBookings.push(bookingObj);
+        }
+
         return res.json({
-            Bookings: bookings
+            Bookings: updatedBookings
         });
     }
 
@@ -570,7 +624,12 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async(req, res, _
         endDate
     });
 
-    res.json(newBooking);
+    //for formatting date
+    const bookingObj = newBooking.toJSON();
+    bookingObj.createdAt = formatDate(bookingObj.createdAt);
+    bookingObj.updatedAt = formatDate(bookingObj.updatedAt);
+
+    res.json(bookingObj);//turn newBooking to bookingObj
 });
 
 
