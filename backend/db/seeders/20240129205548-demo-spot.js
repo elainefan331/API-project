@@ -55,8 +55,31 @@ module.exports = {
         name: 'Pine House',
         description: 'Cozy three-bedroom house.',
         price: 200,
+      },
+      {
+        ownerId: 3,
+        address: '226 Tappen Street',
+        city: 'Brookline',
+        state: 'MA',
+        country: 'USA',
+        lat: 39.7910,
+        lng: 39.6441,
+        name: 'Tappen House',
+        description: 'Cozy three-bedroom house.',
+        price: 80,
+      },
+      {
+        ownerId: 3,
+        address: '404 Langley Street',
+        city: 'Brookline',
+        state: 'MA',
+        country: 'USA',
+        lat: 37.7910,
+        lng: 37.6441,
+        name: 'Langley House',
+        description: 'Cozy three-bedroom house.',
+        price: 80,
       }
-
     ], { validate: true })
   },
 
