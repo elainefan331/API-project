@@ -5,3 +5,15 @@
 .hidden {
   display: none;
 }
+
+.header {
+  display: flex;
+  justify-content: space-around;
+}
+
+.user-button {
+  background-color: white;
+  /* border: green solid 2px;
+  border-radius: 50% 50% 50% 50%; */
+}
+
