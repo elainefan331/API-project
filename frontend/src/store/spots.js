@@ -51,6 +51,31 @@ export const getSpotDetailThunk = (spotId) => async(dispatch) => {
     dispatch(receiveSpot(spot))
 }
 
+export const createSpotThunk = (spot) => async(dispatch) => {
+  try {
+    const response = await csrfFetch('/api/spots', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(spot)
+    });
+    if(response.ok) {
+      const newSpot = await response.json();
+      dispatch(receiveSpot(newSpot));
+      return newSpot
+    } 
+  } catch(e) {
+    const error = await e.json()
+    const errorObj = error.errors
+    console.log("errors in createSpotThunk", errorObj)
+    return errorObj
+  }
+  // if(response.status >= 400) {
+  //   console.log("he")
+  //   const errors = await response.json()
+  //   return errors
+  // }
+}
+
 
 
   /** Reducer: */
