@@ -55,7 +55,7 @@ const SpotForm = ({spot, formType}) => {
     return (
         <form onSubmit={handleSubmit}>
             <h2>{formType}</h2>
-            <h3>Where's your place located?</h3>
+            <h3>Where&apos;s your place located?</h3>
             <p>Guests will only get your exact address once they booked a reservation.</p>
             <label>
                 Country
@@ -119,7 +119,7 @@ const SpotForm = ({spot, formType}) => {
             </label>
             <div>{errors.description && <p className="validation">{errors.description}</p>}</div>
             <h3>Create a title for your spot</h3>
-            <p>Catch guests' attention with a spot title that highlights what makes your place special.</p>
+            <p>Catch guests&apos; attention with a spot title that highlights what makes your place special.</p>
             <label>
                 <input
                     type='text' placeholder="Name of your spot"
