@@ -40,6 +40,15 @@ export const getAllSpotsThunk = () => async(dispatch) => {
     dispatch(loadSpots(spots))
   }
 
+export const getSpotsOwnedByUserThunk = () => async(dispatch) => {
+    const response = await csrfFetch('/api/spots/current', {
+      method: 'GET',
+      headers: {'Content-Type': 'application/json'}
+    });
+    const spots = await response.json();
+    dispatch(loadSpots(spots))
+}
+
 export const getSpotDetailThunk = (spotId) => async(dispatch) => {
     console.log("spotId in thunk", spotId)
     const response = await csrfFetch(`/api/spots/${spotId}`, {
@@ -50,6 +59,7 @@ export const getSpotDetailThunk = (spotId) => async(dispatch) => {
     console.log("spot in thunk", spot)
     dispatch(receiveSpot(spot))
 }
+
 
 export const createSpotThunk = (spot) => async(dispatch) => {
   try {

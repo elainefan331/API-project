@@ -22,6 +22,7 @@ const SpotForm = ({spot, formType}) => {
     const handleSubmit = async(e) => {
         e.preventDefault();
         spot = {...spot, address, city, state, country, name, description, price};
+        
         let newErrors = {}
         if(!name) newErrors.name = "Name is required"
         if(!price) newErrors.price = "Price is required"
@@ -37,7 +38,7 @@ const SpotForm = ({spot, formType}) => {
                 // const image = {
                 //     img
                 // }
-                navigate(`spots/${fatchedResult.id}`)
+                navigate(`/spots/${fatchedResult.id}`)
             } else {
                 newErrors = {...fatchedResult, ...newErrors}
                 console.log("new errors in spot form", newErrors)
@@ -47,8 +48,9 @@ const SpotForm = ({spot, formType}) => {
         }
         
         helper();
-
     }
+
+    
     
     return (
         <form onSubmit={handleSubmit}>

@@ -3,6 +3,8 @@ import './SpotIndexItem.css'
 
 const SpotIndexItem = ({spot}) => {
     return (
+        <>
+
         <div className="card">
             <Link to={`/spots/${spot.id}`}>
             <div className='card-img-container'>
@@ -24,6 +26,7 @@ const SpotIndexItem = ({spot}) => {
             </Link>
         </div>
         
+        </>
     )
 }
 

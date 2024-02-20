@@ -8,7 +8,7 @@ import './SpotsIndex.css'
 const SpotsIndex = () => {
     const dispatch = useDispatch();
     const spotsObj = useSelector(state => state.spots);
-    console.log("spotsObj in SpotsIndex", spotsObj)
+    // console.log("spotsObj in SpotsIndex", spotsObj)
     const spots = Object.values(spotsObj);
     
 
@@ -28,7 +28,6 @@ const SpotsIndex = () => {
             </div>
         </section>
     )
-
 
 }
 
