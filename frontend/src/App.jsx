@@ -6,6 +6,11 @@ import { Outlet, createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Navigation from './components/Navigation/Navigation-bonus';
 import * as sessionActions from './store/session';
 import { Modal } from './context/Modal';
+import SpotsIndex from './components/SpotsIndex/SpotsIndex';
+import SpotDetail from './components/SpotDetail/SpotDetail';
+import CreateSpotForm from './components/CreateSpotForm';
+import ManageSpot from './components/ManageSpot';
+import UpdateSpotForm from './components/UpdateSpotForm/UpdateSpotForm';
 
 function Layout() {
   const dispatch = useDispatch();
@@ -32,8 +37,24 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <h1>Welcome!</h1>
+        element: <SpotsIndex />
       },
+      {
+        path: '/spots/:spotId',
+        element: <SpotDetail />
+      },
+      {
+        path: '/spots/new',
+        element: <CreateSpotForm />
+      },
+      {
+        path: '/spots/current',
+        element: <ManageSpot />
+      },
+      {
+        path: '/spots/:spotId/edit',
+        element: <UpdateSpotForm />
+      }
       // {
       //   path: 'login',
       //   element: <LoginFormPage />
