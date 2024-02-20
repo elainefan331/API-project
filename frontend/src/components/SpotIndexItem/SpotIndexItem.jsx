@@ -8,9 +8,9 @@ const SpotIndexItem = ({spot}) => {
         <div className="card">
             <Link to={`/spots/${spot.id}`}>
             <div className='card-img-container'>
-                {/* <img src={`${spot.previewImage}`}/> */}
+                <img src={`${spot.previewImage}`}/>
                 {/* <img src='../../../pexels-ron-lach-9211816.jpeg'/> */}
-                <img src='https://live.staticflickr.com/65535/53539723485_2685405f76_k.jpg' />
+                {/* <img src='https://live.staticflickr.com/65535/53539723485_2685405f76_k.jpg' /> */}
             </div>
             <div className='card-content-container'>
                 <div className='location-and-price'>

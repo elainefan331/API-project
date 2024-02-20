@@ -25,8 +25,6 @@ const UpdateSpotForm = () => {
                     spot={spot}
                     formType="Update Spot"
                 />
-                <h1>hi</h1>
-                <h2>hi</h2>
             </>
         )
     )

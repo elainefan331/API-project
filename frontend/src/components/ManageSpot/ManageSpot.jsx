@@ -3,10 +3,13 @@ import { getSpotsOwnedByUserThunk } from '../../store/spots'
 import { useEffect } from 'react';
 import SpotIndexItem from '../SpotIndexItem/SpotIndexItem';
 import { Link } from 'react-router-dom';
+import DeleteSpotModal from '../DeleteSpotModal/DeleteSpotModal';
+import { useModal } from '../../context/Modal';
 import './ManageSpot.css'
 
 const ManageSpot = () => {
     const dispatch = useDispatch();
+    const { setModalContent } = useModal();
     const spotsObj = useSelector(state => state.spots);
     const spots = Object.values(spotsObj);
     const sessionUser = useSelector(state => state.session.user);
@@ -14,6 +17,10 @@ const ManageSpot = () => {
     useEffect(() => {
         dispatch(getSpotsOwnedByUserThunk())
     }, [dispatch])
+
+    const handleDeleteClick = (spotId) => {
+        setModalContent(<DeleteSpotModal spotId={spotId} />)
+    }
 
     return (
         <>
@@ -31,7 +38,7 @@ const ManageSpot = () => {
                         />
                         <div className="spot-actions">
                             <button><Link to={`/spots/${spot.id}/edit`}>Update</Link></button>
-                            <button>Delete</button>
+                            <button onClick={() => handleDeleteClick(spot.id)}>Delete</button>
                         </div>
                     </div>
                 ))}
