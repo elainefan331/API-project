@@ -3,12 +3,18 @@ import { csrfFetch } from './csrf.js';
 
 /** Action Type Constants: */
 export const LOAD_REVIEWS = 'reviews/LOAD_REVIEWS';
+// export const RECEIVE_REVIEW = 'reviews/RECEIVE_REVIEW';
 
 /**  Action Creators: */
 export const loadReviews = (reviews) => ({
     type: LOAD_REVIEWS,
     reviews
-  });
+});
+
+// export const receiveReview = (review) => ({
+//     type: RECEIVE_REVIEW,
+//     review
+// });
 
   /** Thunk Action Creators: */
 export const getReviewsBySpotIdThunk = (spotId) => async(dispatch) => {
@@ -19,6 +25,8 @@ export const getReviewsBySpotIdThunk = (spotId) => async(dispatch) => {
     const reviews = await response.json();
     dispatch(loadReviews(reviews))
 }
+
+
 
 // /** Reducer: */
 
@@ -32,8 +40,8 @@ const reviewsReducer = (state = {}, action) => {
         });
         return reviewsState;
       }
-    //   case RECEIVE_SPOT:
-    //     return { ...state, [action.spot.id]: action.spot };
+      // case RECEIVE_REVIEW:
+      //   return { ...state, [action.review.id]: action.review };
     //   case UPDATE_REPORT:
     //     return { ...state, [action.report.id]: action.report };
     //   case REMOVE_REPORT: {

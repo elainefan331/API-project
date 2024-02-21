@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { getSpotDetailThunk } from '../../store/spots'
 import { getReviewsBySpotIdThunk} from '../../store/reviews'
 import ReviewIndexItem from '../ReviewIndexItem/ReviewIndexItem'
+import CreateReviewModal from '../CreateReviewModal/CreateReviewModal'
+import { useModal } from '../../context/Modal';
 import './SpotDetail.css'
 
 
@@ -11,6 +13,7 @@ const SpotDetail = () => {
     const {spotId} = useParams();
     // console.log(spotId)
     const dispatch = useDispatch();
+    const { setModalContent } = useModal();
 
     const spotsObj = useSelector(state => state.spots)
     const spot = spotsObj[spotId]
@@ -39,6 +42,20 @@ const SpotDetail = () => {
     //             dispatch(getReviewsBySpotIdThunk(spotId));
     //         })
     // }, [dispatch, spotId])
+    const ishidden = () => {
+        if(!currentUser) return true;
+        if(currentUser && currentUser.id === spot.ownerId) return true;
+        if(currentUser) {
+            for(let review of reviews) {
+                if(review.userId === currentUser.id) return true
+            }
+            return false;
+        }
+    }
+
+    const handlePostClick = (spotId) => {
+        setModalContent(<CreateReviewModal spotId={spotId} />)
+    }
 
     if (!spot || !spot.Owner || !spot.SpotImages) {
         return <div>Loading...</div>; 
@@ -95,7 +112,10 @@ const SpotDetail = () => {
             <p>{spot.numReviews > 0 ? `.` : null}</p>
             <p>{0 < spot.numReviews <= 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews` }</p>
         </div>
-
+        
+        <div>
+            {ishidden()? null : (<button onClick={() => handlePostClick(spot.id)}>Post Your Review</button>)}
+        </div>
         <section>
             <div>
                 {reviewPrompt ? (<p>Be the first to post a review!</p>) : reviews.reverse().map((review) => (

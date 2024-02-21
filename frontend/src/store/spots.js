@@ -5,7 +5,8 @@ export const LOAD_SPOTS = 'spots/LOAD_SPOTS';
 export const RECEIVE_SPOT = 'spots/RECEIVE_SPOT';
 export const UPDATE_SPOT = 'spots/UPDATE_SPOT';
 export const REMOVE_SPOT = 'spots/REMOVE_SPOT';
-export const RECEIVE_IMAGE = 'spots/RECEIVE_IMAGE'
+export const RECEIVE_IMAGE = 'spots/RECEIVE_IMAGE';
+export const RECEIVE_REVIEW = 'spots/RECEIVE_REVIEW';
 
 /**  Action Creators: */
 export const loadSpots = (spots) => ({
@@ -31,6 +32,12 @@ export const loadSpots = (spots) => ({
 export const receiveImage = (image, spotId) => ({
   type: RECEIVE_IMAGE,
   image,
+  spotId
+});
+
+export const receiveReview = (review, spotId) => ({
+  type: RECEIVE_REVIEW,
+  review,
   spotId
 });
 
@@ -98,6 +105,19 @@ export const createImageThunk = (image, spotId) => async(dispatch) => {
     const newImage = await response.json();
     dispatch(receiveImage(newImage, spotId));
     return newImage;
+  }
+}
+
+export const createReviewThunk = (review, spotId) => async(dispatch) => {
+  const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(review)
+  });
+  if(response.ok) {
+    const newReview = await response.json();
+    dispatch(receiveReview(newReview, spotId));
+    return newReview;
   }
 }
 
