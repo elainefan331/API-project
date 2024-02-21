@@ -15,6 +15,7 @@ const SpotDetail = () => {
     const dispatch = useDispatch();
     const { setModalContent } = useModal();
     const [reviewUpdate, setReviewUpdate] = useState(false);
+    const [reviewDelete, setReviewDelete] = useState(false);
 
     const spotsObj = useSelector(state => state.spots)
     const spot = spotsObj[spotId]
@@ -35,7 +36,7 @@ const SpotDetail = () => {
             await dispatch(getReviewsBySpotIdThunk(spotId))
         }
         helper()
-    }, [dispatch, spotId, reviewUpdate])
+    }, [dispatch, spotId, reviewUpdate, reviewDelete])
 
     // useEffect(() => {
     //     dispatch(getSpotDetailThunk(spotId))
@@ -101,7 +102,8 @@ const SpotDetail = () => {
                         <p>${spot.price} night</p>
                         <i className="fa-solid fa-star">{spot.avgStarRating ? spot.avgStarRating.toFixed(1) : "New"}</i>
                         <p>{spot.numReviews > 0 ? `.` : null}</p>
-            <p>{0 < spot.numReviews <= 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews` }</p>
+            {/* <p>{0 < spot.numReviews <= 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews` }</p> */}
+            <p>{spot.numReviews > 1 ? `${spot.numReviews} reviews` : spot.numReviews == 0 ? null : `${spot.numReviews} review`}</p>
                     </div>
                     <button>Reserve</button>
                 </div>
@@ -111,7 +113,8 @@ const SpotDetail = () => {
         <div>
             <i className="fa-solid fa-star">{spot.avgStarRating ? spot.avgStarRating.toFixed(1) : "New"}</i>
             <p>{spot.numReviews > 0 ? `.` : null}</p>
-            <p>{0 < spot.numReviews <= 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews` }</p>
+            {/* <p>{0 < spot.numReviews <= 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews` }</p> */}
+            <p>{spot.numReviews > 1 ? `${spot.numReviews} reviews` : spot.numReviews == 0 ? null : `${spot.numReviews} review`}</p>
         </div>
         
         <div>
@@ -122,6 +125,8 @@ const SpotDetail = () => {
                 {reviewPrompt ? (<p>Be the first to post a review!</p>) : reviews.reverse().map((review) => (
                     <ReviewIndexItem 
                     review={review}
+                    currentUser={currentUser}
+                    reviewDelete={() => setReviewDelete(prev => !prev)}
                     key={review.id}
                     />
                 ))}

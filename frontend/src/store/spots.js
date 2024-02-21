@@ -176,18 +176,6 @@ const spotsReducer = (state = {}, action) => {
         }
         return newState;
       }
-      // case RECEIVE_REVIEW: {
-      //   const newState = {...state};
-      //   const spotId = action.spotId;
-      //   const newReview = action.review;
-      //   if(newState[spotId]) {
-      //     if (!Array.isArray(newState[spotId].Reviews)) {
-      //       newState[spotId].Reviews = [];
-      //     }
-      //     newState[spotId].Reviews = [...newState[spotId].Reviews, newReview]
-      //   }
-      //   return newState;
-      // }
       case UPDATE_SPOT:
         return { ...state, [action.spot.id]: action.spot };
       case REMOVE_SPOT: {
