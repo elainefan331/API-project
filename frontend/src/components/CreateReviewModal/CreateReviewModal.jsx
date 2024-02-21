@@ -2,18 +2,24 @@ import { useModal } from "../../context/Modal";
 import { useDispatch } from "react-redux";
 import StarsRatingInput from "../StarsRatingInput";
 import { useState } from "react";
+import { createReviewThunk } from '../../store/reviews'
 import './CreateReviewModal.css'
 
-const CreateReviewModal = () => {
+const CreateReviewModal = ({spotId, reviewPosted}) => {
     const { closeModal } = useModal();
     const dispatch = useDispatch();
     const [review, setReview] = useState("");
     const [rating, setRating] = useState(null);
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
-        // dispatch();
+        const newReview = {
+            review,
+            stars: rating
+        }
+        await dispatch(createReviewThunk(newReview, spotId));
+        reviewPosted();
         closeModal();
     }
 
@@ -22,7 +28,7 @@ const CreateReviewModal = () => {
     }
 
     return (
-        <div>
+        <form onSubmit = {handleSubmit}>
             <h1>How was your stay?</h1>
             <textarea 
                 placeholder="Leave your review here..."
@@ -45,10 +51,11 @@ const CreateReviewModal = () => {
             <button 
                 type="submit" 
                 disabled={review.length < 10 || rating === null}
-                onClick={handleSubmit}>
+            >
+                {/* onClick={handleSubmit} */}
                 Submit Your Review
             </button>
-        </div>
+        </form>
     )
 }
 

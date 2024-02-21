@@ -9,9 +9,13 @@ const ReviewIndexItem = ({review}) => {
     let year = date.getFullYear()
     // console.log("year", year)
 
+    // if (!review.User || !review.review || !review.createdAt) {
+    //     return <div>Loading...</div>; 
+    // }
+
     return (
         <div>
-            <h3>{review.User.firstName}</h3>
+            {review.User && review.User.firstName && <h3>{review.User.firstName}</h3>}
             <h4>{`${month} ${year}`}</h4>
             <p>{review.review}</p>
         </div>

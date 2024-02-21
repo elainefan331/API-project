@@ -2,6 +2,10 @@ import { Link } from 'react-router-dom';
 import './SpotIndexItem.css'
 
 const SpotIndexItem = ({spot}) => {
+    if(!spot) {
+        return <div>Loading...</div>; 
+    }
+
     return (
         <>
 
@@ -20,7 +24,7 @@ const SpotIndexItem = ({spot}) => {
                 </div>
 
                 <div style={{color: "orange", fontSize: "12px"}}>
-                    <i className="fa-solid fa-star">{spot.avgRating}</i>
+                    <i className="fa-solid fa-star">{spot.avgRating==="NaN"? "New": spot.avgRating}</i>
                 </div>
             </div>
             </Link>

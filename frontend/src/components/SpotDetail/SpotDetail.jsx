@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector} from "react-redux";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { getSpotDetailThunk } from '../../store/spots'
 import { getReviewsBySpotIdThunk} from '../../store/reviews'
 import ReviewIndexItem from '../ReviewIndexItem/ReviewIndexItem'
@@ -14,6 +14,7 @@ const SpotDetail = () => {
     // console.log(spotId)
     const dispatch = useDispatch();
     const { setModalContent } = useModal();
+    const [reviewUpdate, setReviewUpdate] = useState(false);
 
     const spotsObj = useSelector(state => state.spots)
     const spot = spotsObj[spotId]
@@ -34,7 +35,7 @@ const SpotDetail = () => {
             await dispatch(getReviewsBySpotIdThunk(spotId))
         }
         helper()
-    }, [dispatch, spotId])
+    }, [dispatch, spotId, reviewUpdate])
 
     // useEffect(() => {
     //     dispatch(getSpotDetailThunk(spotId))
@@ -54,7 +55,7 @@ const SpotDetail = () => {
     }
 
     const handlePostClick = (spotId) => {
-        setModalContent(<CreateReviewModal spotId={spotId} />)
+        setModalContent(<CreateReviewModal spotId={spotId} reviewPosted={() => setReviewUpdate(prev => !prev)} />)
     }
 
     if (!spot || !spot.Owner || !spot.SpotImages) {
@@ -98,7 +99,7 @@ const SpotDetail = () => {
                 <div className="spot-detail-action">
                     <div>
                         <p>${spot.price} night</p>
-                        <i className="fa-solid fa-star">{spot.avgStarRating ? spot.avgStarRating : "New"}</i>
+                        <i className="fa-solid fa-star">{spot.avgStarRating ? spot.avgStarRating.toFixed(1) : "New"}</i>
                         <p>{spot.numReviews > 0 ? `.` : null}</p>
             <p>{0 < spot.numReviews <= 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews` }</p>
                     </div>
@@ -108,7 +109,7 @@ const SpotDetail = () => {
         </section>
 
         <div>
-            <i className="fa-solid fa-star">{spot.avgStarRating ? spot.avgStarRating : "New"}</i>
+            <i className="fa-solid fa-star">{spot.avgStarRating ? spot.avgStarRating.toFixed(1) : "New"}</i>
             <p>{spot.numReviews > 0 ? `.` : null}</p>
             <p>{0 < spot.numReviews <= 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews` }</p>
         </div>

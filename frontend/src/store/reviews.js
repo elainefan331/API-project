@@ -3,7 +3,7 @@ import { csrfFetch } from './csrf.js';
 
 /** Action Type Constants: */
 export const LOAD_REVIEWS = 'reviews/LOAD_REVIEWS';
-// export const RECEIVE_REVIEW = 'reviews/RECEIVE_REVIEW';
+export const RECEIVE_REVIEW = 'reviews/RECEIVE_REVIEW';
 
 /**  Action Creators: */
 export const loadReviews = (reviews) => ({
@@ -15,6 +15,10 @@ export const loadReviews = (reviews) => ({
 //     type: RECEIVE_REVIEW,
 //     review
 // });
+export const receiveReview = (review) => ({
+  type: RECEIVE_REVIEW,
+  review
+});
 
   /** Thunk Action Creators: */
 export const getReviewsBySpotIdThunk = (spotId) => async(dispatch) => {
@@ -26,6 +30,18 @@ export const getReviewsBySpotIdThunk = (spotId) => async(dispatch) => {
     dispatch(loadReviews(reviews))
 }
 
+export const createReviewThunk = (review, spotId) => async(dispatch) => {
+  const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(review)
+  });
+  if(response.ok) {
+    const newReview = await response.json();
+    dispatch(receiveReview(newReview));
+    return newReview;
+  }
+}
 
 
 // /** Reducer: */
@@ -40,8 +56,8 @@ const reviewsReducer = (state = {}, action) => {
         });
         return reviewsState;
       }
-      // case RECEIVE_REVIEW:
-      //   return { ...state, [action.review.id]: action.review };
+      case RECEIVE_REVIEW: 
+        return { ...state, [action.review.id]: action.review };
     //   case UPDATE_REPORT:
     //     return { ...state, [action.report.id]: action.report };
     //   case REMOVE_REPORT: {

@@ -6,7 +6,7 @@ export const RECEIVE_SPOT = 'spots/RECEIVE_SPOT';
 export const UPDATE_SPOT = 'spots/UPDATE_SPOT';
 export const REMOVE_SPOT = 'spots/REMOVE_SPOT';
 export const RECEIVE_IMAGE = 'spots/RECEIVE_IMAGE';
-export const RECEIVE_REVIEW = 'spots/RECEIVE_REVIEW';
+// export const RECEIVE_REVIEW = 'spots/RECEIVE_REVIEW';
 
 /**  Action Creators: */
 export const loadSpots = (spots) => ({
@@ -35,11 +35,11 @@ export const receiveImage = (image, spotId) => ({
   spotId
 });
 
-export const receiveReview = (review, spotId) => ({
-  type: RECEIVE_REVIEW,
-  review,
-  spotId
-});
+// export const receiveReview = (review, spotId) => ({
+//   type: RECEIVE_REVIEW,
+//   review,
+//   spotId
+// });
 
   /** Thunk Action Creators: */
 
@@ -108,18 +108,18 @@ export const createImageThunk = (image, spotId) => async(dispatch) => {
   }
 }
 
-export const createReviewThunk = (review, spotId) => async(dispatch) => {
-  const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(review)
-  });
-  if(response.ok) {
-    const newReview = await response.json();
-    dispatch(receiveReview(newReview, spotId));
-    return newReview;
-  }
-}
+// export const createReviewThunk = (review, spotId) => async(dispatch) => {
+//   const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
+//     method: 'POST',
+//     headers: {'Content-Type': 'application/json'},
+//     body: JSON.stringify(review)
+//   });
+//   if(response.ok) {
+//     const newReview = await response.json();
+//     dispatch(receiveReview(newReview, spotId));
+//     return newReview;
+//   }
+// }
 
 export const updateSpotThunk = (spot, spotId) => async(dispatch) => {
   const response = await csrfFetch(`/api/spots/${spotId}`, {
@@ -176,6 +176,18 @@ const spotsReducer = (state = {}, action) => {
         }
         return newState;
       }
+      // case RECEIVE_REVIEW: {
+      //   const newState = {...state};
+      //   const spotId = action.spotId;
+      //   const newReview = action.review;
+      //   if(newState[spotId]) {
+      //     if (!Array.isArray(newState[spotId].Reviews)) {
+      //       newState[spotId].Reviews = [];
+      //     }
+      //     newState[spotId].Reviews = [...newState[spotId].Reviews, newReview]
+      //   }
+      //   return newState;
+      // }
       case UPDATE_SPOT:
         return { ...state, [action.spot.id]: action.spot };
       case REMOVE_SPOT: {
