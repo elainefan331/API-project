@@ -1,0 +1,11 @@
+.rating-input {
+    display: flex;
+}
+
+.rating-input .filled {
+    color: saddlebrown;
+  }
+  
+  .rating-input .empty {
+    color: wheat;
+  }

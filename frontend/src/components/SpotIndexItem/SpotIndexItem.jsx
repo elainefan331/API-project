@@ -2,15 +2,19 @@ import { Link } from 'react-router-dom';
 import './SpotIndexItem.css'
 
 const SpotIndexItem = ({spot}) => {
+    if(!spot) {
+        return <div>Loading...</div>; 
+    }
+
     return (
         <>
 
         <div className="card">
             <Link to={`/spots/${spot.id}`}>
             <div className='card-img-container'>
-                {/* <img src={`${spot.previewImage}`}/> */}
+                <img src={`${spot.previewImage}`}/>
                 {/* <img src='../../../pexels-ron-lach-9211816.jpeg'/> */}
-                <img src='https://live.staticflickr.com/65535/53539723485_2685405f76_k.jpg' />
+                {/* <img src='https://live.staticflickr.com/65535/53539723485_2685405f76_k.jpg' /> */}
             </div>
             <div className='card-content-container'>
                 <div className='location-and-price'>
@@ -20,7 +24,7 @@ const SpotIndexItem = ({spot}) => {
                 </div>
 
                 <div style={{color: "orange", fontSize: "12px"}}>
-                    <i className="fa-solid fa-star">{spot.avgRating}</i>
+                    <i className="fa-solid fa-star">{spot.avgRating==="NaN"? "New": spot.avgRating}</i>
                 </div>
             </div>
             </Link>

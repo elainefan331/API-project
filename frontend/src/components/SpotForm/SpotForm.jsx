@@ -1,13 +1,15 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { createSpotThunk } from "../../store/spots";
+import { createSpotThunk, createImageThunk, updateSpotThunk } from "../../store/spots";
+
 import './SpotForm.css'
 
 
 const SpotForm = ({spot, formType}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { spotId } = useParams();
     const [country, setCountry] = useState(spot?.country);
     const [address, setAddress] = useState(spot?.address);
     const [city, setCity] = useState(spot?.city);
@@ -16,33 +18,98 @@ const SpotForm = ({spot, formType}) => {
     const [name, setName] = useState(spot?.name);
     const [price, setPrice] = useState(spot?.price);
     const [image, setImage] = useState('');
+    const [otherImage, setOtherImage] = useState(['', '', '', '']);
     const [errors, setErrors] = useState({});
+
+    useEffect(() => {
+        const validationObj = {};
+
+        if(country.length < 1) {
+            validationObj.country = "country is required"
+        }
+
+        if(address.length < 1) {
+            validationObj.address = "address is required"
+        }
+
+        if(city.length < 1) {
+            validationObj.city = "city is required"
+        }
+
+        if(state.length < 1) {
+            validationObj.state = "state is required"
+        }
+
+        if(description.length < 30) {
+            validationObj.description = "please write at least 30 characters"
+        }
+
+        if(name.length < 1) {
+            validationObj.name = "name is required"
+        }
+
+        if(!price) {
+            validationObj.price = "price is required"
+        }
+
+        if(image.length < 1) {
+            validationObj.image = "preview image is required"
+        }
+
+        setErrors(validationObj)
+    }, [country, address, city, state, description, name, price, image])
     
+    const handleOtherImage = (index, value) => {
+        const updatedOtherImages = [...otherImage];
+        updatedOtherImages[index] = value;
+        setOtherImage(updatedOtherImages);
+    }
 
     const handleSubmit = async(e) => {
         e.preventDefault();
         spot = {...spot, address, city, state, country, name, description, price};
         
-        let newErrors = {}
-        if(!name) newErrors.name = "Name is required"
-        if(!price) newErrors.price = "Price is required"
-        if(!image) newErrors.image = "Preview image is required"
+        // let newErrors = {}
+        // if(!name) newErrors.name = "Name is required"
+        // if(!price) newErrors.price = "Price is required"
+        // if(!image) newErrors.image = "Preview image is required"
 
         const helper = async() => {
             let fatchedResult;
-            if(formType === "Create a New Spot") {
-                fatchedResult = await dispatch(createSpotThunk(spot))
+            if(formType === "Update Spot") {
+                fatchedResult = await dispatch(updateSpotThunk(spot, spotId))
             }
 
+            if(formType === "Create a New Spot" && Object.keys(errors).length === 0) {
+                // console.log("should not see this")
+                fatchedResult = await dispatch(createSpotThunk(spot))
+            }
+            // console.log("outside of fetch")
             if(fatchedResult.id) {
-                // const image = {
-                //     img
-                // }
+                if(formType === "Create a New Spot") {
+                    const previewImg = {
+                        url: image,
+                        preview: true
+                    }
+    
+                    await dispatch(createImageThunk(previewImg, fatchedResult.id));
+    
+                    for(let img of otherImage) {
+                        if(img) {
+                            const otherImage = {
+                                url:img,
+                                preview: false
+                            };
+                            await dispatch(createImageThunk(otherImage, fatchedResult.id));
+                        }
+                    }
+                }
+
                 navigate(`/spots/${fatchedResult.id}`)
             } else {
-                newErrors = {...fatchedResult, ...newErrors}
-                console.log("new errors in spot form", newErrors)
-                setErrors(newErrors)
+                // newErrors = {...fatchedResult, ...newErrors}
+                // console.log("new errors in spot form", newErrors)
+                // setErrors(newErrors)
                 console.log("errors in spot form", errors)
             }
         }
@@ -93,22 +160,7 @@ const SpotForm = ({spot, formType}) => {
                 />  
             </label>
             <div>{errors.state && <p className="validation">{errors.state}</p>}</div>
-            {/* <label>
-                Latitude
-                <input
-                    type='text'
-                    // value={address}
-                    // onChange={(e) => }
-                />  
-            </label>
-            <label>
-                Longitude
-                <input
-                    type='text'
-                    // value={address}
-                    // onChange={(e) => }
-                />  
-            </label> */}
+            
             <h3>Describe your place to guests</h3>
             <p>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</p>
             <label>
@@ -139,8 +191,11 @@ const SpotForm = ({spot, formType}) => {
                 />  
             </label>
             <div>{errors.price && <p className="validation">{errors.price}</p>}</div>
-            <h3>Liven up your spot with photos</h3>
-            <p>Submit a link to at least one photo to publish your spot.</p>
+            <div>
+                {formType === "Create a New Spot"? 
+            <div>
+                <h3>Liven up your spot with photos</h3>
+                <p>Submit a link to at least one photo to publish your spot.</p>
                 <div>
                     <input
                         type='text' placeholder="Preview Image URL"
@@ -149,19 +204,21 @@ const SpotForm = ({spot, formType}) => {
                     />
                     <div>{errors.image && <p className="validation">{errors.image}</p>}</div>
                 </div>
-                <div>
-                    <input type='text' placeholder="Image URL" />
-                </div>
-                <div>
-                    <input type='text' placeholder="Image URL" />
-                </div>
-                <div>
-                    <input type='text' placeholder="Image URL" />
-                </div>
-                <div>
-                    <input type='text' placeholder="Image URL" />
-                </div>
-            <button type="submit">Create Spot</button>
+                {otherImage.map((img, index) => (
+                    <div key={index}>
+                        <input
+                            type='text' placeholder="Image URL"
+                            value={img}
+                            onChange={(e) => handleOtherImage(index, e.target.value)}
+                        />
+                    </div>
+                ))}
+            </div> : null
+                
+                }
+
+            </div>
+            <button type="submit">{formType}</button>
         </form>
     )
 }

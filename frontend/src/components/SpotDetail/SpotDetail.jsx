@@ -1,9 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector} from "react-redux";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { getSpotDetailThunk } from '../../store/spots'
 import { getReviewsBySpotIdThunk} from '../../store/reviews'
 import ReviewIndexItem from '../ReviewIndexItem/ReviewIndexItem'
+import CreateReviewModal from '../CreateReviewModal/CreateReviewModal'
+import { useModal } from '../../context/Modal';
 import './SpotDetail.css'
 
 
@@ -11,6 +13,9 @@ const SpotDetail = () => {
     const {spotId} = useParams();
     // console.log(spotId)
     const dispatch = useDispatch();
+    const { setModalContent } = useModal();
+    const [reviewUpdate, setReviewUpdate] = useState(false);
+    const [reviewDelete, setReviewDelete] = useState(false);
 
     const spotsObj = useSelector(state => state.spots)
     const spot = spotsObj[spotId]
@@ -31,7 +36,7 @@ const SpotDetail = () => {
             await dispatch(getReviewsBySpotIdThunk(spotId))
         }
         helper()
-    }, [dispatch, spotId])
+    }, [dispatch, spotId, reviewUpdate, reviewDelete])
 
     // useEffect(() => {
     //     dispatch(getSpotDetailThunk(spotId))
@@ -39,6 +44,20 @@ const SpotDetail = () => {
     //             dispatch(getReviewsBySpotIdThunk(spotId));
     //         })
     // }, [dispatch, spotId])
+    const ishidden = () => {
+        if(!currentUser) return true;
+        if(currentUser && currentUser.id === spot.ownerId) return true;
+        if(currentUser) {
+            for(let review of reviews) {
+                if(review.userId === currentUser.id) return true
+            }
+            return false;
+        }
+    }
+
+    const handlePostClick = (spotId) => {
+        setModalContent(<CreateReviewModal spotId={spotId} reviewPosted={() => setReviewUpdate(prev => !prev)} />)
+    }
 
     if (!spot || !spot.Owner || !spot.SpotImages) {
         return <div>Loading...</div>; 
@@ -81,9 +100,10 @@ const SpotDetail = () => {
                 <div className="spot-detail-action">
                     <div>
                         <p>${spot.price} night</p>
-                        <i className="fa-solid fa-star">{spot.avgStarRating ? spot.avgStarRating : "New"}</i>
+                        <i className="fa-solid fa-star">{spot.avgStarRating ? spot.avgStarRating.toFixed(1) : "New"}</i>
                         <p>{spot.numReviews > 0 ? `.` : null}</p>
-            <p>{0 < spot.numReviews <= 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews` }</p>
+            {/* <p>{0 < spot.numReviews <= 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews` }</p> */}
+            <p>{spot.numReviews > 1 ? `${spot.numReviews} reviews` : spot.numReviews == 0 ? null : `${spot.numReviews} review`}</p>
                     </div>
                     <button>Reserve</button>
                 </div>
@@ -91,16 +111,22 @@ const SpotDetail = () => {
         </section>
 
         <div>
-            <i className="fa-solid fa-star">{spot.avgStarRating ? spot.avgStarRating : "New"}</i>
+            <i className="fa-solid fa-star">{spot.avgStarRating ? spot.avgStarRating.toFixed(1) : "New"}</i>
             <p>{spot.numReviews > 0 ? `.` : null}</p>
-            <p>{0 < spot.numReviews <= 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews` }</p>
+            {/* <p>{0 < spot.numReviews <= 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews` }</p> */}
+            <p>{spot.numReviews > 1 ? `${spot.numReviews} reviews` : spot.numReviews == 0 ? null : `${spot.numReviews} review`}</p>
         </div>
-
+        
+        <div>
+            {ishidden()? null : (<button onClick={() => handlePostClick(spot.id)}>Post Your Review</button>)}
+        </div>
         <section>
             <div>
                 {reviewPrompt ? (<p>Be the first to post a review!</p>) : reviews.reverse().map((review) => (
                     <ReviewIndexItem 
                     review={review}
+                    currentUser={currentUser}
+                    reviewDelete={() => setReviewDelete(prev => !prev)}
                     key={review.id}
                     />
                 ))}
