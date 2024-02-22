@@ -17,6 +17,10 @@ const SpotDetail = () => {
     const [reviewUpdate, setReviewUpdate] = useState(false);
     const [reviewDelete, setReviewDelete] = useState(false);
 
+    const toggleReviewDelete = () => {
+        setReviewDelete(prev => !prev)
+    }
+
     const spotsObj = useSelector(state => state.spots)
     const spot = spotsObj[spotId]
     console.log("spot in spot detail page", spot)
@@ -59,6 +63,12 @@ const SpotDetail = () => {
         setModalContent(<CreateReviewModal spotId={spotId} reviewPosted={() => setReviewUpdate(prev => !prev)} />)
     }
 
+    const reserveButtonClick = (e) => {
+        e.preventDefault();
+        console.log("window.alert", window.alert)
+        window.alert('Feature coming soon')
+    }
+
     if (!spot || !spot.Owner || !spot.SpotImages) {
         return <div>Loading...</div>; 
     }
@@ -71,7 +81,7 @@ const SpotDetail = () => {
     
     return (
         <>
-        <section>
+        <section className="spot-detail-page">
             <div className="spot-detail-header">
                 <h1>{spot.name}</h1>
                 <p>{spot.city}, {spot.state}, {spot.country}</p>
@@ -84,7 +94,7 @@ const SpotDetail = () => {
                 <div className="spot-detail-image-thumbnails">
                     {
                         otherImages.map((img) => (
-                            <div key={Image.id} className="spot-detail-small-image">
+                            <div key={Image.id} className="spot-detail-small-image-container">
                                 <img src={img.url} alt="spot image" />
                             </div>
                         ))
@@ -97,27 +107,30 @@ const SpotDetail = () => {
                     <h1>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h1>
                     <p>{spot.description}</p>
                 </div>
-                <div className="spot-detail-action">
-                    <div>
-                        <p>${spot.price} night</p>
-                        <i className="fa-solid fa-star">{spot.avgStarRating ? spot.avgStarRating.toFixed(1) : "New"}</i>
-                        <p>{spot.numReviews > 0 ? `.` : null}</p>
+                <div className="spot-detail-action-container">
+                    <div className="spot-detail-action-price-star-review">
+                        <span className="spot-detail-action-price">${spot.price.toFixed(2)} night</span>
+                        <div className="spot-detail-action-star-review">
+                            <i style={{color: "orange"}} className="fa-solid fa-star">{spot.avgStarRating ? spot.avgStarRating.toFixed(1) : "New"}</i>
+                            <span className="dot">{spot.numReviews > 0 ? `   ·    ` : null}</span>
             {/* <p>{0 < spot.numReviews <= 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews` }</p> */}
-            <p>{spot.numReviews > 1 ? `${spot.numReviews} reviews` : spot.numReviews == 0 ? null : `${spot.numReviews} review`}</p>
+                            <span className="spot-detail-action-review">{spot.numReviews > 1 ? `${spot.numReviews} reviews` : spot.numReviews == 0 ? null : `${spot.numReviews} review`}</span>
+
+                        </div>
                     </div>
-                    <button>Reserve</button>
+                    <button onClick={reserveButtonClick}>Reserve</button>
                 </div>
             </div>
         </section>
 
         <div>
-            <i className="fa-solid fa-star">{spot.avgStarRating ? spot.avgStarRating.toFixed(1) : "New"}</i>
-            <p>{spot.numReviews > 0 ? `.` : null}</p>
+            <i style={{color: "orange"}} className="fa-solid fa-star">{spot.avgStarRating ? spot.avgStarRating.toFixed(1) : "New"}</i>
+            <span className="dot">{spot.numReviews > 0 ? `   ·    ` : null}</span>
             {/* <p>{0 < spot.numReviews <= 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews` }</p> */}
-            <p>{spot.numReviews > 1 ? `${spot.numReviews} reviews` : spot.numReviews == 0 ? null : `${spot.numReviews} review`}</p>
+            <span className="spot-detail-action-review">{spot.numReviews > 1 ? `${spot.numReviews} reviews` : spot.numReviews == 0 ? null : `${spot.numReviews} review`}</span>
         </div>
         
-        <div>
+        <div className="post-your-review-container">
             {ishidden()? null : (<button onClick={() => handlePostClick(spot.id)}>Post Your Review</button>)}
         </div>
         <section>
@@ -126,7 +139,7 @@ const SpotDetail = () => {
                     <ReviewIndexItem 
                     review={review}
                     currentUser={currentUser}
-                    reviewDelete={() => setReviewDelete(prev => !prev)}
+                    reviewDelete={toggleReviewDelete}
                     key={review.id}
                     />
                 ))}

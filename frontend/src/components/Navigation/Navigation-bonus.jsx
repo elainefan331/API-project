@@ -14,18 +14,22 @@ function Navigation({ isLoaded }) {
         <NavLink to="/">
           {/* <img src='../../../public/icons8-home-100.png' alt='home' className='home-logo' style={{height: "30px", width: "30px"}}/> */}
           <div style={{color: 'green', fontSize: "15px"}}>
-          <i className="fa-solid fa-campground" > Camp  with  Dream</i>
+          <i className="fa-solid fa-campground nav-logo" > Camp  with  Dream</i>
           </div>
         </NavLink>
         {/* <NavLink to="/">Home</NavLink> */}
       {/* </li> */}
-      {sessionUser ? (<Link to='/spots/new'>Create a New Spot</Link>) : null}
+      <div className='create-spot-user-button-container'>
+      <button className={sessionUser? 'navigation-create-newSpot-link-button' : 'wipe-navigation-create-newSpot-link-button'}>
+        {sessionUser ? (<Link to='/spots/new'>Create a New Spot</Link>) : null}
+      </button>
 
       {isLoaded && (
         // <li>
           <ProfileButton user={sessionUser} />
         // </li>
       )}
+      </div>
     </div>
     // </ul>
   );

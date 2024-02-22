@@ -4,3 +4,41 @@
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 10px
 }
+
+.manageSpot-create-button-link {
+    text-decoration: none;
+    color: white
+}
+
+.manageSpot-create-button {
+    background-color: green; 
+    color: white; 
+    border: none; 
+    padding: 8px 16px; 
+    margin-top: 8px; 
+    cursor: pointer; 
+    border-radius: 4px; 
+}
+
+.wipe-manageSpot-create-button {
+    display: none;
+}
+
+.manage-spot-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.manage-spot-actions a {
+    text-decoration: none;
+    color: white;
+}
+
+.manage-spot-actions > button {
+    padding: 5px;
+    background-color: green;
+    color: white;
+    border-radius: 5px;
+    border: 2px gray solid;
+    box-shadow: 1px 1px 1px gray;
+}

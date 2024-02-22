@@ -15,7 +15,12 @@ function OpenModalMenuItem({
   };
 
   return (
-    <li onClick={onClick}>{itemText}</li>
+    <div 
+      style={{cursor:'pointer', padding:'10px', fontFamily: 'Arial', color:'green', fontWeight:'bold'}}
+      onClick={onClick}
+    >
+      {itemText}
+    </div>
   );
 }
 

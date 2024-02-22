@@ -226,7 +226,7 @@ router.get('/current', requireAuth, async(req, res, _next) => {
 
         let numReviews = reviews.length;
         let sumStarRating = reviews.reduce((acc, review) => acc + review.stars, 0);
-        let avgRating = sumStarRating / numReviews;
+        let avgRating = (sumStarRating / numReviews).toFixed(1);
         
         const spotObj = spot.toJSON();
         spotObj.avgRating = avgRating;

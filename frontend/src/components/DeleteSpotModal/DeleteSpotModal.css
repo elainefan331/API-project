@@ -1,0 +1,25 @@
+.deleteSpotModal-container {
+    margin: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    /* border: 2px red solid; */
+}
+
+.deleteSpotModal-container > button {
+    padding: 10px 0px;
+}
+
+.deleteSpotModal-yes-button {
+    background-color: rgb(241, 108, 108);
+    color: white;
+    box-shadow: 2px 2px 2px gray;
+}
+
+.deleteReviewModal-no-button {
+    background-color: darkgray;
+    color: white;
+    box-shadow: 2px 2px 2px gray;
+}

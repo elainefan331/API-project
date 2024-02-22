@@ -41,73 +41,87 @@ function SignupFormModal() {
     });
   };
 
+  const isDisabled = username.length < 4 || password.length < 6 || email.length < 1 || firstName.length < 1 || lastName.length < 1 || confirmPassword.length < 1
+
   return (
-    <>
+    <div className='signup-modal-container'>
       <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
+      <form onSubmit={handleSubmit} className='signup-form-container'>
+        {/* <label>
           Email
+          </label> */}
           <input
+            placeholder="Email (required)"
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </label>
         {errors.email && <p>{errors.email}</p>}
-        <label>
+        {/* <label>
           Username
+          </label> */}
           <input
+            placeholder="Username (minimum 4 characters)"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
-        </label>
         {errors.username && <p>{errors.username}</p>}
-        <label>
+        {/* <label>
           First Name
+          </label> */}
           <input
+            placeholder="First Name (required)"
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             required
           />
-        </label>
         {errors.firstName && <p>{errors.firstName}</p>}
-        <label>
+        {/* <label>
           Last Name
+          </label> */}
           <input
+            placeholder="Last Name (required)"
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             required
           />
-        </label>
         {errors.lastName && <p>{errors.lastName}</p>}
-        <label>
+        {/* <label>
           Password
+          </label> */}
           <input
+            placeholder="Password (minimum 6 characters)"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
         {errors.password && <p>{errors.password}</p>}
-        <label>
+        {/* <label>
           Confirm Password
+          </label> */}
           <input
+            placeholder="Confirm Password (required)"
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-        </label>
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+        <button 
+          type="submit"
+          disabled={isDisabled}
+          className={isDisabled? 'disable-signup-button' : 'signup-button'}
+        >
+          Sign Up
+        </button>
       </form>
-    </>
+    </div>
   );
 }
 

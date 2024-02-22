@@ -23,7 +23,7 @@ const UpdateSpotForm = () => {
             <>
                 <SpotForm
                     spot={spot}
-                    formType="Update Spot"
+                    formType="Update your spot"
                 />
             </>
         )
