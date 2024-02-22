@@ -25,8 +25,8 @@ const ManageSpot = () => {
     return (
         <>
         <h1>Manage Your Spots</h1>
-        <button>
-        {sessionUser ? (<Link to='/spots/new'>Create a New Spot</Link>) : null}
+        <button className={sessionUser && spots.length === 0 ? 'manageSpot-create-button' : 'wipe-manageSpot-create-button'}>
+        {sessionUser && spots.length === 0 ? (<Link to='/spots/new' className='manageSpot-create-button-link'>Create a New Spot</Link>) : null}
         </button>
         <section>
             <div className='manage-spot-main'>
@@ -36,7 +36,7 @@ const ManageSpot = () => {
                             spot={spot}
                             // key={spot.id}
                         />
-                        <div className="spot-actions">
+                        <div className="manage-spot-actions">
                             <button><Link to={`/spots/${spot.id}/edit`}>Update</Link></button>
                             <button onClick={() => handleDeleteClick(spot.id)}>Delete</button>
                         </div>

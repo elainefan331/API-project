@@ -1,0 +1,24 @@
+.reviewIndexItem-container {
+    margin: 40px 0px;
+    display: flex;
+    flex-direction: column;
+}
+
+.reviewIndexItem-username {
+    font-weight: bold;
+}
+
+.reviewIndexItem-date {
+    color: gray
+}
+
+.reviewIndexItem-delete-button-container > button {
+    color: white;
+    background-color: green;
+    border: 1px solid gray;
+    box-shadow: 1px 1px 1px gray;
+    border-radius: 2px;
+    padding: 5px;
+    cursor: pointer;
+}
+

@@ -1,5 +1,66 @@
 .profile-dropdown {
   position: absolute;
+  background-color: antiquewhite;
+  border-radius: 10px;
+  display: flex;
+  justify-content: start;
+  /* border: 2px green solid; */
+  margin-top: 8px;
+}
+
+.login-signup-container {
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+}
+
+.login-user-drop-down {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 5px;
+  /* border: 2px red solid; */
+}
+
+/*contain login user info(username and email)*/
+.login-user-info-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-bottom: darkgray 2px solid;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.manage-spots-link-container {
+  width: 100%;
+  border-bottom: darkgray 2px solid;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+  text-align: center;
+}
+
+.manage-spots-link {
+  text-decoration: none;
+  color: green;
+  font-size: medium;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.logout-button-container {
+  margin: 3px;
+}
+
+.logout-button-container > button {
+  background-color: green;
+  color: white;
+  border: 2px solid gray;
+  border-radius: 5px;
+  box-shadow: 1px 1px 1px gray;
+  cursor: pointer;
 }
 
 .hidden {
@@ -9,11 +70,42 @@
 .header {
   display: flex;
   justify-content: space-around;
+  padding-bottom: 5px;
+  border-bottom: 2px green solid;
 }
 
 .user-button {
-  background-color: white;
-  /* border: green solid 2px;
-  border-radius: 50% 50% 50% 50%; */
+  border: 2px solid gray;
+  border-radius: 25% 25% 25% 25%;
+  background-color: wheat;
+  box-shadow: 2px 2px 2px gray;
 }
 
+.user-button:hover {
+  cursor: pointer;
+}
+
+.navigation-create-newSpot-link-button a {
+  text-decoration: none;
+  color: white;
+}
+
+.navigation-create-newSpot-link-button {
+  background-color: green;
+  border-radius: 5px;
+  border: 2px solid gray;
+  box-shadow: 1px 1px 1px gray;
+}
+
+.wipe-navigation-create-newSpot-link-button {
+  display: none;
+}
+
+.create-spot-user-button-container {
+  display: flex;
+  gap:10px;
+}
+
+.nav-logo {
+  margin-top: 8px;
+}

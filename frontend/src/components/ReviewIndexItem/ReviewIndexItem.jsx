@@ -1,5 +1,6 @@
 import { useModal } from '../../context/Modal';
 import DeleteReviewModal from '../DeleteReviewModal/DeleteReviewModal'
+import './ReviewIndexItem.css'
 
 const ReviewIndexItem = ({review, currentUser, reviewDelete}) => {
     // console.log(review.createdAt)
@@ -26,11 +27,13 @@ const ReviewIndexItem = ({review, currentUser, reviewDelete}) => {
     }
 
     return (
-        <div>
-            {review.User && review.User.firstName && <h3>{review.User.firstName}</h3>}
-            <h4>{`${month} ${year}`}</h4>
+        <div className='reviewIndexItem-container'>
+            {review.User && review.User.firstName && <span className='reviewIndexItem-username'>{review.User.firstName}</span>}
+            <span className='reviewIndexItem-date'>{`${month} ${year}`}</span>
             <p>{review.review}</p>
+            <div className='reviewIndexItem-delete-button-container'>
             {currentUser && currentUser.id && review.userId === currentUser.id && <button onClick={() => handleDeleteClick(review.id)}>Delete</button>}
+            </div>
         </div>
     )
 }

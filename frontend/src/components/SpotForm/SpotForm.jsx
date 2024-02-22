@@ -25,35 +25,35 @@ const SpotForm = ({spot, formType}) => {
         const validationObj = {};
 
         if(country.length < 1) {
-            validationObj.country = "country is required"
+            validationObj.country = "Country is required"
         }
 
         if(address.length < 1) {
-            validationObj.address = "address is required"
+            validationObj.address = "Address is required"
         }
 
         if(city.length < 1) {
-            validationObj.city = "city is required"
+            validationObj.city = "City is required"
         }
 
         if(state.length < 1) {
-            validationObj.state = "state is required"
+            validationObj.state = "State is required"
         }
 
         if(description.length < 30) {
-            validationObj.description = "please write at least 30 characters"
+            validationObj.description = "Description needs 30 or more characters"
         }
 
         if(name.length < 1) {
-            validationObj.name = "name is required"
+            validationObj.name = "Name is required"
         }
 
         if(!price) {
-            validationObj.price = "price is required"
+            validationObj.price = "Price per night is required"
         }
 
         if(image.length < 1) {
-            validationObj.image = "preview image is required"
+            validationObj.image = "Preview image is required"
         }
 
         setErrors(validationObj)
@@ -76,7 +76,7 @@ const SpotForm = ({spot, formType}) => {
 
         const helper = async() => {
             let fatchedResult;
-            if(formType === "Update Spot") {
+            if(formType === "Update your spot") {
                 fatchedResult = await dispatch(updateSpotThunk(spot, spotId))
             }
 
@@ -126,65 +126,77 @@ const SpotForm = ({spot, formType}) => {
             <p>Guests will only get your exact address once they booked a reservation.</p>
             <label>
                 Country
+                </label>
                 <input
                     type='text' placeholder="Country"
                     value={country}
                     onChange={(e) => setCountry(e.target.value)}
                 />
-            </label>
             <div>{errors.country && <p className="validation">{errors.country}</p>}</div>
             <label>
                 Street Address
+                </label>
                 <input
                     type='text' placeholder="Street Address"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                 />  
-            </label>
             <div>{errors.address && <p className="validation">{errors.address}</p>}</div>
-            <label>
-                City
-                <input
-                    type='text' placeholder="City"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                />  
-            </label>
-            <div>{errors.city && <p className="validation">{errors.city}</p>}</div>
-            <label>
-                State
-                <input
-                    type='text' placeholder="State"
-                    value={state}
-                    onChange={(e) => setState(e.target.value)}
-                />  
-            </label>
-            <div>{errors.state && <p className="validation">{errors.state}</p>}</div>
-            
+
+            <div className="spot-form-city-state-container">
+                <div className="spot-form-city-container">
+                    <label>
+                        City
+                    </label>
+                    <input
+                        type='text' placeholder="City"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                    />  
+                    <div>{errors.city && <p className="validation">{errors.city}</p>}</div>
+                </div>
+                <div className="spot-form-city-state-comma-container">,</div>
+                <div className="spot-form-state-container">
+                    <label>
+                        State
+                    </label>
+                    <input
+                        type='text' placeholder="State"
+                        value={state}
+                        onChange={(e) => setState(e.target.value)}
+                    />  
+                    <div>{errors.state && <p className="validation">{errors.state}</p>}</div>
+                </div>
+            </div>
+
+            <div className="spotForm-divide-line"></div>
+
             <h3>Describe your place to guests</h3>
             <p>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</p>
-            <label>
-                <textarea placeholder="Please write at least 30 characters"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                />  
-            </label>
+            
+            <textarea placeholder="Please write at least 30 characters"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+            />  
+            
             <div>{errors.description && <p className="validation">{errors.description}</p>}</div>
+            <div className="spotForm-divide-line"></div>
             <h3>Create a title for your spot</h3>
             <p>Catch guests&apos; attention with a spot title that highlights what makes your place special.</p>
-            <label>
-                <input
-                    type='text' placeholder="Name of your spot"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                />  
-            </label>
+            
+            <input
+                type='text' placeholder="Name of your spot"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+            />  
+            
             <div>{errors.name && <p className="validation">{errors.name}</p>}</div>
+            <div className="spotForm-divide-line"></div>
             <h3>Set a base price for your spot</h3>
             <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
             <label>
                 $
-                <input
+                <input className="spotForm-price-input"
                     type='number' step='0.01' placeholder="Price per night (USD)"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
@@ -194,10 +206,11 @@ const SpotForm = ({spot, formType}) => {
             <div>
                 {formType === "Create a New Spot"? 
             <div>
+                <div className="spotForm-divide-line"></div>
                 <h3>Liven up your spot with photos</h3>
                 <p>Submit a link to at least one photo to publish your spot.</p>
-                <div>
-                    <input
+                <div className="spotForm-url-input-container">
+                    <input className="spotForm-url-input"
                         type='text' placeholder="Preview Image URL"
                         value={image}
                         onChange={(e) => setImage(e.target.value)}
@@ -205,8 +218,8 @@ const SpotForm = ({spot, formType}) => {
                     <div>{errors.image && <p className="validation">{errors.image}</p>}</div>
                 </div>
                 {otherImage.map((img, index) => (
-                    <div key={index}>
-                        <input
+                    <div key={index} className="spotForm-url-input-container">
+                        <input className="spotForm-url-input"
                             type='text' placeholder="Image URL"
                             value={img}
                             onChange={(e) => handleOtherImage(index, e.target.value)}
@@ -218,7 +231,9 @@ const SpotForm = ({spot, formType}) => {
                 }
 
             </div>
-            <button type="submit">{formType}</button>
+            <div className="spotForm-submit-button-container">
+                <button type="submit">{formType}</button>
+            </div>
         </form>
     )
 }

@@ -1,0 +1,27 @@
+.deleteReviewModal-container {
+    margin: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    /* border: 2px red solid; */
+}
+
+.deleteReviewModal-container > button {
+    padding: 10px 0px;
+}
+
+.deleteReviewModal-yes-button {
+    background-color: rgb(241, 108, 108);
+    color: white;
+    box-shadow: 2px 2px 2px gray;
+    cursor: pointer;
+}
+
+.deleteReviewModal-no-button {
+    background-color: darkgray;
+    color: white;
+    box-shadow: 2px 2px 2px gray;
+    cursor: pointer;
+}

@@ -26,10 +26,11 @@ const CreateReviewModal = ({spotId, reviewPosted}) => {
     const onChange = (num) =>{
         setRating(num)
     }
+    const isDisabled = review.length < 10 || rating === null;
 
     return (
         <form onSubmit = {handleSubmit}>
-            <h1>How was your stay?</h1>
+            <h1 className="createReviewModal-h1">How was your stay?</h1>
             <textarea 
                 placeholder="Leave your review here..."
                 value={review}
@@ -49,8 +50,10 @@ const CreateReviewModal = ({spotId, reviewPosted}) => {
                 
             </div>
             <button 
+                className={isDisabled? "disable-createReviewModal-submit-button" : "createReviewModal-submit-button"}
                 type="submit" 
-                disabled={review.length < 10 || rating === null}
+                // disabled={review.length < 10 || rating === null}
+                disabled= {isDisabled}
             >
                 {/* onClick={handleSubmit} */}
                 Submit Your Review

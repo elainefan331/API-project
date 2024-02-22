@@ -3,7 +3,8 @@
 }
 
 .rating-input .filled {
-    color: saddlebrown;
+    /* color: saddlebrown; */
+    color: green;
   }
   
   .rating-input .empty {
