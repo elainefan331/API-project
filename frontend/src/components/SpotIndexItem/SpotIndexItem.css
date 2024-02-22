@@ -1,7 +1,4 @@
-.card-img-container {
-    /* height: 25%;
-    width: 25% */
-}
+
 
 .card-preview-img-container > img {
     width: 100%;
@@ -14,10 +11,7 @@
     justify-content: space-between;
 }
 
-/* .spotIndexItem-stars,
-.location-and-price {
-    border: 2px solid red;
-} */
+
 
 .card a {
     text-decoration: none; 

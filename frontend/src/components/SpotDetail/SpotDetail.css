@@ -119,43 +119,15 @@
 
 
 
-/* .spot-detail-image-container {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    gap: 10px; /* Adjust the gap as needed */
-    
-} */
-
-/* .spot-detail-image-preview {
-    flex: 1; /* Takes up twice the space of the thumbnails */
-    display: flex;
-} */
-
-/* .spot-detail-image-preview img {
-    width: 100%; /* Makes the image take up the full div */
-    height: 100%; /* Keeps the image aspect ratio */
-} */
-
-/* .spot-detail-image-thumbnails {
-    flex: 1;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap:3px
-    
-} */
-
-/* .spot-detail-small-image {
-    width: calc(50% - 5px); 
-    height: 50%;
-    /* border:red solid 2pxAdjusts for the gap to have two images per row */
-    /*margin-bottom: 10px;*/
-} */
 
 
 
-/* .spot-detail-small-image img {
-    width: 100%; /* Makes the image take up the full div */
-    height: 100%; /* Keeps the image aspect ratio */
-} */
+
+
+
+
+
+
+
+
+
