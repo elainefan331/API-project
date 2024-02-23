@@ -176,6 +176,7 @@ const SpotForm = ({spot, formType}) => {
             
             <textarea placeholder="Please write at least 30 characters"
                 value={description}
+                className="spot-form-textarea"
                 onChange={(e) => setDescription(e.target.value)}
             />  
             
@@ -234,7 +235,6 @@ const SpotForm = ({spot, formType}) => {
             <div className="spotForm-submit-button-container">
                 <button type="submit">{formType}</button>
             </div>
-            <h1>hi</h1>
         </form>
     )
 }

@@ -80,7 +80,7 @@ const SpotDetail = () => {
     console.log("reviewPrompt", reviewPrompt)
     
     return (
-        <>
+        <div className="spot-detail-all-page">
         <section className="spot-detail-page">
             <div className="spot-detail-header">
                 <h1>{spot.name}</h1>
@@ -145,7 +145,7 @@ const SpotDetail = () => {
                 ))}
             </div>
         </section>
-        </>
+        </div>
         
     )
 }

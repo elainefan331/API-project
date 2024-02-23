@@ -73,10 +73,6 @@ input {
     width: 98%;
 }
 
-.spot-form-state-container {
-    /* border: 2px solid green; */
-}
-
 .spot-form-state-container > input {
     width: 98%;
 }
@@ -86,4 +82,8 @@ input {
     width: 5%;
     align-self: center;
     text-align: center;
+}
+
+.spot-form-textarea {
+    height: 70px;
 }
