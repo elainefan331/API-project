@@ -1,11 +1,11 @@
 .login-modal-container {
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(27, 63, 27);
     display: flex;
     flex-direction: column;
     padding: 5px;
     align-items: center;
     width:400px;
-    /* border: 2px red solid;
-    border-radius: 5%; */
 }
 
 .login-form-container {
@@ -15,14 +15,19 @@
     padding: 5px;
 }
 
+.login-form-container > input {
+    padding: 10px 0px;
+}
+
 .login-button {
     margin-top: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
     color: white;
-    background-color: green;
-    border: 2px gray solid;
-    box-shadow: 2px 2px 2px gray;
+    background-color: rgb(27, 63, 27);
+    border: 2px rgb(27, 63, 27) solid;
+    box-shadow: 2px 2px 2px rgb(27, 63, 27);
+    border-radius: 5px;
     cursor: pointer;
 }
 
@@ -34,10 +39,11 @@
     background-color: lightgray;
     border: 2px darkgray solid;
     box-shadow: 2px 2px 2px gray;
+    border-radius: 5px;
 }
 
 .demo-user-button {
-    background-color: rgb(32, 62, 32); 
+    background-color: rgb(27, 63, 27); 
     color: white; 
     border: none; 
     padding: 8px 16px; 

@@ -47,66 +47,66 @@ function SignupFormModal() {
     <div className='signup-modal-container'>
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit} className='signup-form-container'>
-        {/* <label>
+        <label>
           Email
-          </label> */}
+          </label>
           <input
-            placeholder="Email (required)"
+            placeholder=" Email (required)"
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
         {errors.email && <p>{errors.email}</p>}
-        {/* <label>
+        <label>
           Username
-          </label> */}
+          </label>
           <input
-            placeholder="Username (minimum 4 characters)"
+            placeholder=" Username (minimum 4 characters)"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
         {errors.username && <p>{errors.username}</p>}
-        {/* <label>
+        <label>
           First Name
-          </label> */}
+          </label>
           <input
-            placeholder="First Name (required)"
+            placeholder=" First Name (required)"
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             required
           />
         {errors.firstName && <p>{errors.firstName}</p>}
-        {/* <label>
+        <label>
           Last Name
-          </label> */}
+          </label>
           <input
-            placeholder="Last Name (required)"
+            placeholder=" Last Name (required)"
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             required
           />
         {errors.lastName && <p>{errors.lastName}</p>}
-        {/* <label>
+        <label>
           Password
-          </label> */}
+          </label>
           <input
-            placeholder="Password (minimum 6 characters)"
+            placeholder=" Password (minimum 6 characters)"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         {errors.password && <p>{errors.password}</p>}
-        {/* <label>
+        <label>
           Confirm Password
-          </label> */}
+          </label>
           <input
-            placeholder="Confirm Password (required)"
+            placeholder=" Confirm Password (required)"
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}

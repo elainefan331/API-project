@@ -14,9 +14,9 @@
 
 .reviewIndexItem-delete-button-container > button {
     color: white;
-    background-color: green;
-    border: 1px solid gray;
-    box-shadow: 1px 1px 1px gray;
+    background-color: rgb(27, 63, 27);
+    border: 1px solid rgb(27, 63, 27);
+    box-shadow: 2px 2px 2px rgb(27, 63, 27);
     border-radius: 2px;
     padding: 5px;
     cursor: pointer;

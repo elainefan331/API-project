@@ -134,7 +134,7 @@ const SpotDetail = () => {
             {ishidden()? null : (<button onClick={() => handlePostClick(spot.id)}>Post Your Review</button>)}
         </div>
         <section>
-            <div>
+            <div className="be-the-first-review-container">
                 {reviewPrompt ? (<p>Be the first to post a review!</p>) : reviews.reverse().map((review) => (
                     <ReviewIndexItem 
                     review={review}
