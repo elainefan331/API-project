@@ -1,4 +1,6 @@
 .signup-modal-container {
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(27, 63, 27);
     display: flex;
     flex-direction: column;
     padding: 5px;
@@ -9,9 +11,15 @@
 .signup-form-container {
     width: 80%;
     display: grid;
-    gap: 10px;
+    gap: 5px;
     padding: 5px;
 }
+
+.signup-form-container > input {
+    padding: 10px 0px;
+}
+
+
 
 .disable-signup-button {
     margin-top: 10px;
@@ -21,6 +29,7 @@
     background-color: lightgray;
     border: 2px darkgray solid;
     box-shadow: 2px 2px 2px gray;
+    border-radius: 5px;
 }
 
 .signup-button {
@@ -28,8 +37,9 @@
     padding-top: 10px;
     padding-bottom: 10px;
     color: white;
-    background-color: green;
-    border: 2px gray solid;
-    box-shadow: 2px 2px 2px gray;
+    background-color: rgb(27, 63, 27);
+    border: 2px rgb(27, 63, 27) solid;
+    box-shadow: 2px 2px 2px rgb(27, 63, 27);
+    border-radius: 5px;
     cursor: pointer;
 }

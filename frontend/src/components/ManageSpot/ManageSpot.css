@@ -7,13 +7,14 @@
 
 .manageSpot-create-button-link {
     text-decoration: none;
-    color: white
+    color: rgb(27, 63, 27);
 }
 
 .manageSpot-create-button {
-    background-color: green; 
-    color: white; 
-    border: none; 
+    background-color: white; 
+    box-shadow: 2px 2px 2px rgb(27, 63, 27); 
+    /* color: rgb(27, 63, 27); */
+    border: 2px rgb(27, 63, 27) solid; 
     padding: 8px 16px; 
     margin-top: 8px; 
     cursor: pointer; 
@@ -36,9 +37,15 @@
 
 .manage-spot-actions > button {
     padding: 5px;
-    background-color: green;
+    background-color: rgb(27, 63, 27);
     color: white;
     border-radius: 5px;
-    border: 2px gray solid;
-    box-shadow: 1px 1px 1px gray;
+    /* border: 2px gray solid; */
+    border: 2px solid rgb(27, 63, 27);
+    box-shadow: 2px 2px 2px rgb(27, 63, 27);
+}
+
+.manage-spot-h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(27, 63, 27);
 }

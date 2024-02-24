@@ -15,8 +15,7 @@ function OpenModalMenuItem({
   };
 
   return (
-    <div 
-      style={{cursor:'pointer', padding:'10px', fontFamily: 'Arial', color:'green', fontWeight:'bold'}}
+    <div className='openModalMenuItem-container'
       onClick={onClick}
     >
       {itemText}

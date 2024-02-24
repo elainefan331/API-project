@@ -48,7 +48,7 @@ function ProfileButton({ user }) {
     <div>
       <button onClick={toggleMenu} className='user-button'>
         {/* <i className="fas fa-user-circle" /> */}
-        <div className='user-icon-container' style={{color: 'green', fontSize: "20px", padding: "2px"}}>
+        <div className='user-icon-container' style={{color: 'rgb(27, 63, 27)', fontSize: "20px", padding: "2px"}}>
           <i className="fa-solid fa-user"></i>
         </div>
       </button>
