@@ -43,6 +43,7 @@
     /* border: 2px gray solid; */
     border: 2px solid rgb(27, 63, 27);
     box-shadow: 2px 2px 2px rgb(27, 63, 27);
+    cursor: pointer;
 }
 
 .manage-spot-h1 {
