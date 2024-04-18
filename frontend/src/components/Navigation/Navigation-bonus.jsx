@@ -14,7 +14,7 @@ function Navigation({ isLoaded }) {
         <NavLink to="/">
           {/* <img src='../../../public/icons8-home-100.png' alt='home' className='home-logo' style={{height: "30px", width: "30px"}}/> */}
           <div style={{color: 'rgb(27, 63, 27)', fontSize: "15px"}}>
-          <i className="fa-solid fa-campground nav-logo" > Camp  with  Dream</i>
+          <i className="fa-solid fa-campground nav-logo" > Dream Camp</i>
           </div>
         </NavLink>
         {/* <NavLink to="/">Home</NavLink> */}

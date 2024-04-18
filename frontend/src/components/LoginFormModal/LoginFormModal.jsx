@@ -13,8 +13,8 @@ function LoginFormModal() {
   
   const handleDemoLogin = (e) => {
     e.preventDefault();
-    const demoCredential = 'firstaatester';
-    const demoPassword = 'secret password'
+    const demoCredential = 'Demo-lition';
+    const demoPassword = 'password'
     setErrors({});
     return dispatch(sessionActions.login({ credential: demoCredential, password: demoPassword }))
       .then(closeModal)

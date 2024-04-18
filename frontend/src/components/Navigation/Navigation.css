@@ -1,5 +1,7 @@
 .profile-dropdown {
   position: absolute;
+  top: 55px;
+  right: 15px;
   background-color: white;
   border-radius: 10px;
   display: flex;

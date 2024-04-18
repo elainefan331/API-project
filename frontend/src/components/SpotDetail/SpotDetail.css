@@ -184,6 +184,21 @@
     }
 }
 
+@media (max-width:430px) {
+    .spot-detail-content-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .spot-detail-text {
+        width: 100%;
+    }
+
+    .spot-detail-action-container {
+        width: 85%;
+    }
+}
+
 
 
 
